@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alysson Arcas | Coordenador de Projetos</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0d1117;
+      color: #ffffff;
+      scroll-behavior: smooth;
+    }
+
+    header {
+      position: fixed;
+      width: 100%;
+      top: 0;
+      background: rgba(0,0,0,0.8);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 40px;
+      z-index: 1000;
+    }
+
+    nav a {
+      color: white;
+      margin: 0 10px;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .lang {
+      display: flex;
+      gap: 8px;
+    }
+
+    .lang button {
+      background: transparent;
+      border: 1px solid #0A66C2;
+      color: white;
+      padding: 5px 10px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    .active {
+      background: #0A66C2;
+    }
+
+    section {
+      padding: 100px 40px;
+      min-height: 100vh;
+    }
+
+    h1, h2 {
+      color: #00C853;
+    }
+
+    .fade {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.6s ease;
+    }
+
+    .fade.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      background: #000;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <nav>
+    <a href="#home">Home</a>
+    <a href="#sobre">Sobre</a>
+    <a href="#habilidades">Habilidades</a>
+    <a href="#projetos">Projetos</a>
+    <a href="#formacao">Formação</a>
+    <a href="#contato">Contato</a>
+  </nav>
+
+  <div class="lang">
+    <button class="active" onclick="setLang('pt')">PT</button>
+    <button onclick="setLang('en')">EN</button>
+    <button onclick="setLang('es')">ES</button>
+  </div>
+</header>
+
+<section id="home" class="fade">
+  <h1 data-pt="Olá, eu sou Alysson" data-en="Hello, I'm Alysson" data-es="Hola, soy Alysson">Olá, eu sou Alysson</h1>
+  <p data-pt="Coordenador de Projetos" data-en="Project Coordinator" data-es="Coordinador de Proyectos">Coordenador de Projetos</p>
+</section>
+
+<section id="sobre" class="fade">
+  <h2>Sobre</h2>
+  <p>Conteúdo em breve...</p>
+</section>
+
+<section id="habilidades" class="fade">
+  <h2>Habilidades</h2>
+  <p>Conteúdo em breve...</p>
+</section>
+
+<section id="projetos" class="fade">
+  <h2>Projetos</h2>
+  <p>Conteúdo em breve...</p>
+</section>
+
+<section id="formacao" class="fade">
+  <h2>Formação e Certificações</h2>
+  <p>Conteúdo em breve...</p>
+</section>
+
+<section id="contato" class="fade">
+  <h2>Contato</h2>
+  <p>Email: alysson.arcas.pro@gmail.com</p>
+</section>
+
+<footer>
+  <p>© 2026 Alysson Arcas</p>
+</footer>
+
+<script>
+  function setLang(lang) {
+    document.querySelectorAll('[data-pt]').forEach(el => {
+      el.textContent = el.getAttribute('data-' + lang);
+    });
+
+    document.querySelectorAll('.lang button').forEach(btn => btn.classList.remove('active'));
+    event.target.classList.add('active');
+  }
+
+  const faders = document.querySelectorAll('.fade');
+
+  const appearOptions = {
+    threshold: 0.2
+  };
+
+  const appearOnScroll = new IntersectionObserver(function(entries, observer) {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+    });
+  }, appearOptions);
+
+  faders.forEach(fader => {
+    appearOnScroll.observe(fader);
+  });
+</script>
+
+</body>
+</html>
