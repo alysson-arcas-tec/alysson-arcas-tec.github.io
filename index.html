@@ -6,81 +6,76 @@
   <title>Alysson Arcas | Coordenador de Projetos</title>
 
   <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #0d1117;
-      color: #ffffff;
-      scroll-behavior: smooth;
+    :root{
+      --bg:#0d1117; --card:#161b22; --primary:#0A66C2; --accent:#00C853; --text:#e6edf3; --muted:#9aa4b2;
     }
+    *{box-sizing:border-box}
+    body { margin: 0; font-family: Inter, Arial, sans-serif; background: var(--bg); color: var(--text); scroll-behavior: smooth; }
 
-    header {
-      position: fixed;
-      width: 100%;
-      top: 0;
-      background: rgba(0,0,0,0.8);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px 40px;
-      z-index: 1000;
-    }
+    header { position: fixed; width: 100%; top: 0; background: rgba(13,17,23,.9); backdrop-filter: blur(6px); display: flex; justify-content: space-between; align-items: center; padding: 12px 40px; z-index: 1000; border-bottom:1px solid #1f2937 }
+    nav a { color: var(--text); margin: 0 10px; text-decoration: none; font-size: 14px; opacity:.9 }
+    nav a:hover{opacity:1}
 
-    nav a {
-      color: white;
-      margin: 0 10px;
-      text-decoration: none;
-      font-size: 14px;
-    }
+    .lang { display: flex; gap: 8px; }
+    .lang button { background: transparent; border: 1px solid var(--primary); color: var(--text); padding: 6px 10px; cursor: pointer; border-radius: 6px; font-weight:600 }
+    .lang button.active { background: var(--primary); }
 
-    .lang {
-      display: flex;
-      gap: 8px;
-    }
+    section { padding: 110px 40px 80px; min-height: 100vh; }
+    .container{ max-width:1100px; margin:0 auto }
 
-    .lang button {
-      background: transparent;
-      border: 1px solid #0A66C2;
-      color: white;
-      padding: 5px 10px;
-      cursor: pointer;
-      border-radius: 5px;
-    }
+    h1, h2 { margin:0 0 16px }
+    h2{ color: var(--accent); letter-spacing:.3px }
 
-    .active {
-      background: #0A66C2;
-    }
+    .grid{ display:grid; gap:24px }
+    .grid-2{ grid-template-columns: 1.1fr .9fr }
+    .grid-3{ grid-template-columns: repeat(3,1fr) }
 
-    section {
-      padding: 100px 40px;
-      min-height: 100vh;
-    }
+    .card{ background: var(--card); border:1px solid #1f2937; border-radius:14px; padding:18px; transition:.3s; }
+    .card:hover{ transform: translateY(-6px); border-color:#2b3645 }
 
-    h1, h2 {
-      color: #00C853;
-    }
+    .hero{ display:grid; grid-template-columns: 1.2fr .8fr; gap:24px; align-items:center }
+    .hero h1{ font-size:42px }
+    .hero .role{ font-size:20px; color: var(--accent); min-height:28px }
 
-    .fade {
-      opacity: 0;
-      transform: translateY(20px);
-      transition: all 0.6s ease;
-    }
+    .avatar{ width:260px; height:260px; border-radius:50%; object-fit:cover; border:3px solid #1f2937; box-shadow:0 10px 30px rgba(0,0,0,.4) }
 
-    .fade.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    .about-img{ width:100%; max-width:380px; border-radius:14px; border:1px solid #1f2937 }
 
-    footer {
-      text-align: center;
-      padding: 20px;
-      background: #000;
+    .skills{ display:grid; grid-template-columns: repeat(auto-fit,minmax(240px,1fr)); gap:16px }
+    .skill{ background: var(--card); border:1px solid #1f2937; border-radius:12px; padding:16px; transition:.25s }
+    .skill:hover{ transform: translateY(-6px); border-color:#2b3645 }
+    .skill h3{ margin:0 0 8px; font-size:16px }
+    .skill p{ margin:0; color: var(--muted); font-size:14px }
+
+    .project{ display:grid; grid-template-columns: 1fr 1fr; gap:16px }
+    .project img{ width:100%; border-radius:10px; border:1px solid #1f2937 }
+    .project h3{ margin:0 0 8px }
+    .project p{ color: var(--muted) }
+
+    .badges{ display:flex; gap:14px; justify-content:center; flex-wrap:wrap }
+    .badges img{ height:80px }
+
+    .contact{ display:flex; gap:12px; flex-wrap:wrap }
+    .btn{ display:inline-flex; align-items:center; gap:8px; padding:10px 14px; border-radius:10px; text-decoration:none; color:#fff; border:1px solid #1f2937; background:#0f1720 }
+    .btn.primary{ background: var(--primary) }
+    .btn.green{ background:#2ecc71 }
+
+    .fade{ opacity:0; transform: translateY(20px); transition:.6s }
+    .fade.visible{ opacity:1; transform: translateY(0) }
+
+    footer { text-align: center; padding: 30px; background: #000; color:#9aa4b2 }
+
+    @media(max-width:900px){
+      .hero{ grid-template-columns:1fr }
+      .grid-2{ grid-template-columns:1fr }
+      .project{ grid-template-columns:1fr }
+      header{ padding:12px 16px }
+      section{ padding:100px 16px 60px }
     }
   </style>
 </head>
 
 <body>
-
 <header>
   <nav>
     <a href="#home">Home</a>
@@ -90,42 +85,107 @@
     <a href="#formacao">Formação</a>
     <a href="#contato">Contato</a>
   </nav>
-
   <div class="lang">
-    <button class="active" onclick="setLang('pt')">PT</button>
-    <button onclick="setLang('en')">EN</button>
-    <button onclick="setLang('es')">ES</button>
+    <button class="active" onclick="setLang('pt', this)">PT</button>
+    <button onclick="setLang('en', this)">EN</button>
+    <button onclick="setLang('es', this)">ES</button>
   </div>
 </header>
 
 <section id="home" class="fade">
-  <h1 data-pt="Olá, eu sou Alysson" data-en="Hello, I'm Alysson" data-es="Hola, soy Alysson">Olá, eu sou Alysson</h1>
-  <p data-pt="Coordenador de Projetos" data-en="Project Coordinator" data-es="Coordinador de Proyectos">Coordenador de Projetos</p>
+  <div class="container hero">
+    <div>
+      <h1 data-pt="Olá, eu sou Alysson" data-en="Hello, I'm Alysson" data-es="Hola, soy Alysson">Olá, eu sou Alysson</h1>
+      <div class="role" id="typing"></div>
+    </div>
+    <div style="text-align:center">
+      <img class="avatar" src="assets/images/alysson-imagem1.png" alt="Alysson">
+    </div>
+  </div>
 </section>
 
 <section id="sobre" class="fade">
-  <h2>Sobre</h2>
-  <p>Conteúdo em breve...</p>
+  <div class="container grid grid-2">
+    <div>
+      <img class="about-img" src="assets/images/alysson-imagem2.png" alt="Alysson">
+    </div>
+    <div>
+      <h2>Sobre</h2>
+      <p>Meu nome é Alysson, tenho 30 anos e sou Cientista da Computação com mais de 12 anos de experiência em tecnologia, liderança de projetos e desenvolvimento de soluções inovadoras.</p>
+      <p>Atuo como Coordenador de Projetos, liderando equipes multidisciplinares e gerenciando projetos complexos com metodologias ágeis, com foco em resultado, qualidade e eficiência.</p>
+      <p>Tenho experiência desde a análise de requisitos até a implantação final, incluindo modelagem de dados, documentação técnica e integrações. Atualmente curso Mestrado em Ciência da Computação e possuo diversas especializações na área.</p>
+    </div>
+  </div>
 </section>
 
 <section id="habilidades" class="fade">
-  <h2>Habilidades</h2>
-  <p>Conteúdo em breve...</p>
+  <div class="container">
+    <h2>Habilidades</h2>
+    <div class="skills">
+      <div class="skill"><h3>Comunicação & Stakeholders</h3><p>Alinhamento claro com equipes e partes interessadas.</p></div>
+      <div class="skill"><h3>Liderança de Equipes</h3><p>Engajamento e direcionamento para resultados.</p></div>
+      <div class="skill"><h3>Gestão de Projetos</h3><p>Planejamento, escopo, prazos e entregas.</p></div>
+      <div class="skill"><h3>Metodologias Ágeis</h3><p>Scrum, Kanban e melhoria contínua.</p></div>
+      <div class="skill"><h3>Tomada de Decisão</h3><p>Análise estratégica e resolução de problemas.</p></div>
+      <div class="skill"><h3>IA aplicada</h3><p>Uso de IA para produtividade e automação.</p></div>
+    </div>
+  </div>
 </section>
 
 <section id="projetos" class="fade">
-  <h2>Projetos</h2>
-  <p>Conteúdo em breve...</p>
+  <div class="container">
+    <h2>Projetos</h2>
+
+    <div class="card project">
+      <div>
+        <h3>Sistema de Gestão de Refeições</h3>
+        <p>Coordenação completa com metodologia ágil, gestão de escopo, riscos e stakeholders.</p>
+      </div>
+      <img src="assets/images/imagem-sistema-01.png">
+    </div>
+
+    <div class="card project">
+      <div>
+        <h3>Cardápio Aluno (Curitiba App)</h3>
+        <p>Integração com sistema educacional para disponibilização de cardápio.</p>
+      </div>
+      <img src="assets/images/imagem-sistema-02.png">
+    </div>
+
+    <div class="card project">
+      <div>
+        <h3>Curitiba em Movimento</h3>
+        <p>Sistema de reserva de espaços públicos para população.</p>
+      </div>
+      <img src="assets/images/imagem-sistema-03.png">
+    </div>
+
+  </div>
 </section>
 
 <section id="formacao" class="fade">
-  <h2>Formação e Certificações</h2>
-  <p>Conteúdo em breve...</p>
+  <div class="container">
+    <h2>Formação e Certificações</h2>
+    <p>🎓 Formação em Ciência da Computação, com especializações em tecnologia e gestão.</p>
+    <p>📚 Mais de 120 certificações.</p>
+
+    <div class="badges">
+      <img src="assets/images/sfc.png">
+      <img src="assets/images/be.png">
+      <img src="assets/images/pmi.png">
+    </div>
+  </div>
 </section>
 
 <section id="contato" class="fade">
-  <h2>Contato</h2>
-  <p>Email: alysson.arcas.pro@gmail.com</p>
+  <div class="container">
+    <h2>Contato</h2>
+    <div class="contact">
+      <a class="btn primary" href="https://www.linkedin.com/in/alysson-arcas/" target="_blank">LinkedIn</a>
+      <a class="btn" href="mailto:alysson.arcas.pro@gmail.com">Email</a>
+      <a class="btn green" href="#">Portfólio</a>
+    </div>
+  </div>
 </section>
 
 <footer>
@@ -133,32 +193,38 @@
 </footer>
 
 <script>
-  function setLang(lang) {
-    document.querySelectorAll('[data-pt]').forEach(el => {
-      el.textContent = el.getAttribute('data-' + lang);
-    });
-
-    document.querySelectorAll('.lang button').forEach(btn => btn.classList.remove('active'));
-    event.target.classList.add('active');
+  function setLang(lang, el){
+    document.querySelectorAll('[data-pt]').forEach(e=>{
+      e.textContent = e.getAttribute('data-'+lang)
+    })
+    document.querySelectorAll('.lang button').forEach(b=>b.classList.remove('active'))
+    el.classList.add('active')
   }
 
-  const faders = document.querySelectorAll('.fade');
+  const roles = [
+    'Coordenador de Projetos de Software',
+    'Especialista em automatização de IA'
+  ]
+  let i=0,j=0,del=false
+  const typing = document.getElementById('typing')
 
-  const appearOptions = {
-    threshold: 0.2
-  };
+  function type(){
+    const word = roles[i]
+    if(!del){ typing.textContent = word.substring(0,j++) }
+    else{ typing.textContent = word.substring(0,j--) }
 
-  const appearOnScroll = new IntersectionObserver(function(entries, observer) {
-    entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
-      entry.target.classList.add('visible');
-      observer.unobserve(entry.target);
-    });
-  }, appearOptions);
+    if(j===word.length+1){ del=true; setTimeout(type,1000); return }
+    if(j===0){ del=false; i=(i+1)%roles.length }
 
-  faders.forEach(fader => {
-    appearOnScroll.observe(fader);
-  });
+    setTimeout(type, del?40:70)
+  }
+  type()
+
+  const faders = document.querySelectorAll('.fade')
+  const obs = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('visible') } })
+  },{threshold:.2})
+  faders.forEach(f=>obs.observe(f))
 </script>
 
 </body>
