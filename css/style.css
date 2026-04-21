@@ -742,9 +742,9 @@ html[data-theme="light"] .contact-actions .btn-github::before {
 }
 
 .avatar {
+  display: block;
   width: 100%;
-  aspect-ratio: 1;
-  object-fit: cover;
+  height: auto;
   border-radius: calc(var(--radius-lg) - 6px);
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
