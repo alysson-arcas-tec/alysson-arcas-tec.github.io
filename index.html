@@ -2,230 +2,797 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta
+    name="description"
+    content="Portfólio de Alysson Arcas, coordenador de projetos com experiência em tecnologia, liderança de equipes e inteligência artificial."
+  >
   <title>Alysson Arcas | Coordenador de Projetos</title>
-
-  <style>
-    :root{
-      --bg:#0d1117; --card:#161b22; --primary:#0A66C2; --accent:#00C853; --text:#e6edf3; --muted:#9aa4b2;
-    }
-    *{box-sizing:border-box}
-    body { margin: 0; font-family: Inter, Arial, sans-serif; background: var(--bg); color: var(--text); scroll-behavior: smooth; }
-
-    header { position: fixed; width: 100%; top: 0; background: rgba(13,17,23,.9); backdrop-filter: blur(6px); display: flex; justify-content: space-between; align-items: center; padding: 12px 40px; z-index: 1000; border-bottom:1px solid #1f2937 }
-    nav a { color: var(--text); margin: 0 10px; text-decoration: none; font-size: 14px; opacity:.9 }
-    nav a:hover{opacity:1}
-
-    .lang { display: flex; gap: 8px; }
-    .lang button { background: transparent; border: 1px solid var(--primary); color: var(--text); padding: 6px 10px; cursor: pointer; border-radius: 6px; font-weight:600 }
-    .lang button.active { background: var(--primary); }
-
-    section { padding: 110px 40px 80px; min-height: 100vh; }
-    .container{ max-width:1100px; margin:0 auto }
-
-    h1, h2 { margin:0 0 16px }
-    h2{ color: var(--accent); letter-spacing:.3px }
-
-    .grid{ display:grid; gap:24px }
-    .grid-2{ grid-template-columns: 1.1fr .9fr }
-    .grid-3{ grid-template-columns: repeat(3,1fr) }
-
-    .card{ background: var(--card); border:1px solid #1f2937; border-radius:14px; padding:18px; transition:.3s; }
-    .card:hover{ transform: translateY(-6px); border-color:#2b3645 }
-
-    .hero{ display:grid; grid-template-columns: 1.2fr .8fr; gap:24px; align-items:center }
-    .hero h1{ font-size:42px }
-    .hero .role{ font-size:20px; color: var(--accent); min-height:28px }
-
-    .avatar{ width:260px; height:260px; border-radius:50%; object-fit:cover; border:3px solid #1f2937; box-shadow:0 10px 30px rgba(0,0,0,.4) }
-
-    .about-img{ width:100%; max-width:380px; border-radius:14px; border:1px solid #1f2937 }
-
-    .skills{ display:grid; grid-template-columns: repeat(auto-fit,minmax(240px,1fr)); gap:16px }
-    .skill{ background: var(--card); border:1px solid #1f2937; border-radius:12px; padding:16px; transition:.25s }
-    .skill:hover{ transform: translateY(-6px); border-color:#2b3645 }
-    .skill h3{ margin:0 0 8px; font-size:16px }
-    .skill p{ margin:0; color: var(--muted); font-size:14px }
-
-    .project{ display:grid; grid-template-columns: 1fr 1fr; gap:16px }
-    .project img{ width:100%; border-radius:10px; border:1px solid #1f2937 }
-    .project h3{ margin:0 0 8px }
-    .project p{ color: var(--muted) }
-
-    .badges{ display:flex; gap:14px; justify-content:center; flex-wrap:wrap }
-    .badges img{ height:80px }
-
-    .contact{ display:flex; gap:12px; flex-wrap:wrap }
-    .btn{ display:inline-flex; align-items:center; gap:8px; padding:10px 14px; border-radius:10px; text-decoration:none; color:#fff; border:1px solid #1f2937; background:#0f1720 }
-    .btn.primary{ background: var(--primary) }
-    .btn.green{ background:#2ecc71 }
-
-    .fade{ opacity:0; transform: translateY(20px); transition:.6s }
-    .fade.visible{ opacity:1; transform: translateY(0) }
-
-    footer { text-align: center; padding: 30px; background: #000; color:#9aa4b2 }
-
-    @media(max-width:900px){
-      .hero{ grid-template-columns:1fr }
-      .grid-2{ grid-template-columns:1fr }
-      .project{ grid-template-columns:1fr }
-      header{ padding:12px 16px }
-      section{ padding:100px 16px 60px }
-    }
-  </style>
+  <script>
+    (function () {
+      try {
+        const storedTheme = window.localStorage.getItem("portfolio-theme");
+        document.documentElement.dataset.theme = storedTheme === "light" ? "light" : "dark";
+      } catch (error) {
+        document.documentElement.dataset.theme = "dark";
+      }
+    }());
+  </script>
+  <link rel="stylesheet" href="css/style.css">
 </head>
-
 <body>
-<header>
-  <nav>
-    <a href="#home">Home</a>
-    <a href="#sobre">Sobre</a>
-    <a href="#habilidades">Habilidades</a>
-    <a href="#projetos">Projetos</a>
-    <a href="#formacao">Formação</a>
-    <a href="#contato">Contato</a>
-  </nav>
-  <div class="lang">
-    <button class="active" onclick="setLang('pt', this)">PT</button>
-    <button onclick="setLang('en', this)">EN</button>
-    <button onclick="setLang('es', this)">ES</button>
-  </div>
-</header>
+  <canvas id="bg" aria-hidden="true"></canvas>
 
-<section id="home" class="fade">
-  <div class="container hero">
-    <div>
-      <h1 data-pt="Olá, eu sou Alysson" data-en="Hello, I'm Alysson" data-es="Hola, soy Alysson">Olá, eu sou Alysson</h1>
-      <div class="role" id="typing"></div>
-    </div>
-    <div style="text-align:center">
-      <img class="avatar" src="assets/images/alysson-imagem1.png" alt="Alysson">
-    </div>
-  </div>
-</section>
+  <header class="site-header">
+    <div class="container nav-shell">
+      <button
+        class="nav-toggle"
+        type="button"
+        aria-label="Abrir menu de navegação"
+        aria-expanded="false"
+        aria-controls="site-nav"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
 
-<section id="sobre" class="fade">
-  <div class="container grid grid-2">
-    <div>
-      <img class="about-img" src="assets/images/alysson-imagem2.png" alt="Alysson">
-    </div>
-    <div>
-      <h2>Sobre</h2>
-      <p>Meu nome é Alysson, tenho 30 anos e sou Cientista da Computação com mais de 12 anos de experiência em tecnologia, liderança de projetos e desenvolvimento de soluções inovadoras.</p>
-      <p>Atuo como Coordenador de Projetos, liderando equipes multidisciplinares e gerenciando projetos complexos com metodologias ágeis, com foco em resultado, qualidade e eficiência.</p>
-      <p>Tenho experiência desde a análise de requisitos até a implantação final, incluindo modelagem de dados, documentação técnica e integrações. Atualmente curso Mestrado em Ciência da Computação e possuo diversas especializações na área.</p>
-    </div>
-  </div>
-</section>
+      <div class="nav-panel" id="site-nav">
+        <nav class="site-nav" aria-label="Navegação principal">
+          <a href="#home" data-pt="Home" data-en="Home" data-es="Inicio">Home</a>
+          <a href="#sobre" data-pt="Sobre" data-en="About" data-es="Sobre">Sobre</a>
+          <a href="#habilidades" data-pt="Habilidades" data-en="Skills" data-es="Habilidades">Habilidades</a>
+          <a href="#projetos" data-pt="Projetos" data-en="Projects" data-es="Proyectos">Projetos</a>
+          <a href="#formacao" data-pt="Formação" data-en="Education" data-es="Formación">Formação</a>
+          <a href="#contato" data-pt="Contato" data-en="Contact" data-es="Contacto">Contato</a>
+        </nav>
 
-<section id="habilidades" class="fade">
-  <div class="container">
-    <h2>Habilidades</h2>
-    <div class="skills">
-      <div class="skill"><h3>Comunicação & Stakeholders</h3><p>Alinhamento claro com equipes e partes interessadas.</p></div>
-      <div class="skill"><h3>Liderança de Equipes</h3><p>Engajamento e direcionamento para resultados.</p></div>
-      <div class="skill"><h3>Gestão de Projetos</h3><p>Planejamento, escopo, prazos e entregas.</p></div>
-      <div class="skill"><h3>Metodologias Ágeis</h3><p>Scrum, Kanban e melhoria contínua.</p></div>
-      <div class="skill"><h3>Tomada de Decisão</h3><p>Análise estratégica e resolução de problemas.</p></div>
-      <div class="skill"><h3>IA aplicada</h3><p>Uso de IA para produtividade e automação.</p></div>
-    </div>
-  </div>
-</section>
+        <div class="nav-actions">
+          <button
+            class="theme-toggle"
+            type="button"
+            data-theme-toggle
+            aria-label="Ativar modo claro"
+            title="Ativar modo claro"
+            aria-pressed="false"
+          >
+            <span class="theme-toggle-thumb" aria-hidden="true">
+              <span class="theme-toggle-icon"></span>
+            </span>
+          </button>
 
-<section id="projetos" class="fade">
-  <div class="container">
-    <h2>Projetos</h2>
-
-    <div class="card project">
-      <div>
-        <h3>Sistema de Gestão de Refeições</h3>
-        <p>Coordenação completa com metodologia ágil, gestão de escopo, riscos e stakeholders.</p>
+          <div class="lang" aria-label="Selecionar idioma">
+            <button type="button" class="lang-button active" data-lang="pt">PT</button>
+            <button type="button" class="lang-button" data-lang="en">EN</button>
+            <button type="button" class="lang-button" data-lang="es">ES</button>
+          </div>
+        </div>
       </div>
-      <img src="assets/images/imagem-sistema-01.png">
     </div>
+  </header>
 
-    <div class="card project">
-      <div>
-        <h3>Cardápio Aluno (Curitiba App)</h3>
-        <p>Integração com sistema educacional para disponibilização de cardápio.</p>
+  <main>
+    <section id="home" class="hero-section fade">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <h1
+            class="hero-title"
+            data-pt="Olá, eu sou Alysson"
+            data-en="Hello, I'm Alysson"
+            data-es="Hola, soy Alysson"
+          >
+            Olá, eu sou Alysson
+          </h1>
+
+          <div class="role-line">
+            <span
+              class="role-prefix"
+              data-pt="Atuação:"
+              data-en="Focus:"
+              data-es="Enfoque:"
+            >
+              Atuação:
+            </span>
+            <span class="role" id="typing" aria-live="polite"></span>
+          </div>
+
+          <p
+            class="hero-text"
+            data-pt="Transformo projetos em resultados com planejamento, liderança de times e uso inteligente de tecnologia e IA."
+            data-en="I turn projects into results through planning, team leadership, and smart use of technology and AI."
+            data-es="Transformo proyectos en resultados con planificación, liderazgo de equipos y uso inteligente de tecnología e IA."
+          >
+            Transformo projetos em resultados com planejamento, liderança de times e uso inteligente de tecnologia e IA.
+          </p>
+          <div class="hero-actions">
+            <a
+              class="btn btn-primary"
+              href="#contato"
+              data-pt="Vamos conversar"
+              data-en="Let's talk"
+              data-es="Conversemos"
+            >
+              Vamos conversar
+            </a>
+            <a
+              class="btn btn-secondary"
+              href="#projetos"
+              data-pt="Ver projetos"
+              data-en="See projects"
+              data-es="Ver proyectos"
+            >
+              Ver projetos
+            </a>
+          </div>
+          <div class="hero-stats">
+            <article class="stat card">
+              <strong>12+</strong>
+              <span
+                data-pt="anos em tecnologia e produtos digitais"
+                data-en="years in technology and digital products"
+                data-es="años en tecnología y productos digitales"
+              >
+                anos em tecnologia e produtos digitais
+              </span>
+            </article>
+
+            <article class="stat card">
+              <strong>120+</strong>
+              <span
+                data-pt="certificações em tecnologia e gestão"
+                data-en="certifications in technology and management"
+                data-es="certificaciones en tecnología y gestión"
+              >
+                certificações em tecnologia e gestão
+              </span>
+            </article>
+
+            <article class="stat card">
+              <strong>Agile</strong>
+              <span
+                data-pt="entregas com foco em valor, prazo e qualidade"
+                data-en="delivery focused on value, timing and quality"
+                data-es="entregas con foco en valor, plazo y calidad"
+              >
+                entregas com foco em valor, prazo e qualidade
+              </span>
+            </article>
+          </div>
+        </div>
+
+        <div class="hero-visual">
+          <article class="profile-card card">
+            <img
+              class="avatar"
+              src="assets/images/alysson-imagem1.png"
+              alt="Retrato de Alysson Arcas"
+            >
+
+            <div class="profile-card-body">
+              <p
+                class="profile-card-label"
+                data-pt="Perfil profissional"
+                data-en="Professional profile"
+                data-es="Perfil profesional"
+              >
+                Perfil profissional
+              </p>
+
+              <h2
+                class="profile-card-title"
+                data-pt="Coordenação, inovação e execução"
+                data-en="Coordination, innovation and execution"
+                data-es="Coordinación, innovación y ejecución"
+              >
+                Coordenação, inovação e execução
+              </h2>
+
+              <p
+                class="profile-card-text"
+                data-pt="Experiência em projetos complexos, times multidisciplinares e soluções que conectam estratégia, operação e tecnologia."
+                data-en="Experience with complex projects, multidisciplinary teams and solutions that connect strategy, operations and technology."
+                data-es="Experiencia en proyectos complejos, equipos multidisciplinarios y soluciones que conectan estrategia, operación y tecnología."
+              >
+                Experiência em projetos complexos, times multidisciplinares e soluções que conectam estratégia, operação e tecnologia.
+              </p>
+            </div>
+          </article>
+        </div>
       </div>
-      <img src="assets/images/imagem-sistema-02.png">
-    </div>
+    </section>
 
-    <div class="card project">
-      <div>
-        <h3>Curitiba em Movimento</h3>
-        <p>Sistema de reserva de espaços públicos para população.</p>
+    <section class="fade">
+      <div class="container">
+        <span id="sobre" class="anchor-point" aria-hidden="true"></span>
+        <div class="section-heading">
+          <p
+            class="section-kicker"
+            data-pt="Sobre"
+            data-en="About"
+            data-es="Sobre"
+          >
+            Sobre
+          </p>
+          <h2
+            class="section-title"
+            data-pt="Uma trajetória construída entre liderança, tecnologia e entrega"
+            data-en="A career built across leadership, technology and delivery"
+            data-es="Una trayectoria construida entre liderazgo, tecnología y entrega"
+          >
+            Uma trajetória construída entre liderança, tecnologia e entrega
+          </h2>
+        </div>
+
+        <div class="about-layout">
+          <article class="about-media card">
+            <img
+              class="about-img"
+              src="assets/images/alysson-imagem2.png"
+              alt="Alysson Arcas em retrato profissional"
+            >
+          </article>
+
+          <div class="about-copy">
+            <p
+              data-pt="Meu nome é Alysson, tenho 30 anos e sou Cientista da Computação com mais de 12 anos de experiência em tecnologia, liderança de projetos e desenvolvimento de soluções inovadoras."
+              data-en="My name is Alysson, I am 30 years old and a Computer Scientist with over 12 years of experience in technology, project leadership and innovative solutions."
+              data-es="Mi nombre es Alysson, tengo 30 años y soy Científico de la Computación con más de 12 años de experiencia en tecnología, liderazgo de proyectos y soluciones innovadoras."
+            >
+              Meu nome é Alysson, tenho 30 anos e sou Cientista da Computação com mais de 12 anos de experiência em tecnologia, liderança de projetos e desenvolvimento de soluções inovadoras.
+            </p>
+
+            <p
+              data-pt="Atuo como Coordenador de Projetos, liderando equipes multidisciplinares e gerenciando iniciativas complexas com metodologias ágeis, sempre com foco em resultados, qualidade e eficiência."
+              data-en="I work as a Project Coordinator, leading multidisciplinary teams and managing complex initiatives with agile methodologies, always focused on results, quality and efficiency."
+              data-es="Actúo como Coordinador de Proyectos, liderando equipos multidisciplinarios y gestionando iniciativas complejas con metodologías ágiles, siempre enfocado en resultados, calidad y eficiencia."
+            >
+              Atuo como Coordenador de Projetos, liderando equipes multidisciplinares e gerenciando iniciativas complexas com metodologias ágeis, sempre com foco em resultados, qualidade e eficiência.
+            </p>
+
+            <p
+              data-pt="Possuo experiência prática desde a análise de requisitos até a implantação final, incluindo modelagem de dados, documentação técnica, integrações de sistemas e acompanhamento de entregas ponta a ponta."
+              data-en="I have practical experience from requirements analysis to final deployment, including data modeling, technical documentation, system integrations and end-to-end delivery follow-up."
+              data-es="Tengo experiencia práctica desde el análisis de requisitos hasta la implementación final, incluyendo modelado de datos, documentación técnica, integraciones de sistemas y seguimiento de entregas de punta a punta."
+            >
+              Possuo experiência prática desde a análise de requisitos até a implantação final, incluindo modelagem de dados, documentação técnica, integrações de sistemas e acompanhamento de entregas ponta a ponta.
+            </p>
+
+            <p
+              data-pt="Atualmente curso Mestrado em Ciência da Computação e mantenho formação contínua por meio de especializações e certificações em tecnologia, gestão, inovação e transformação digital."
+              data-en="I am currently pursuing a Master's degree in Computer Science and continuously developing through specializations and certifications in technology, management, innovation and digital transformation."
+              data-es="Actualmente curso una maestría en Ciencias de la Computación y mantengo formación continua mediante especializaciones y certificaciones en tecnología, gestión, innovación y transformación digital."
+            >
+              Atualmente curso Mestrado em Ciência da Computação e mantenho formação contínua por meio de especializações e certificações em tecnologia, gestão, inovação e transformação digital.
+            </p>
+          </div>
+        </div>
+
+        <div class="about-feature-grid">
+          <article class="about-feature card">
+            <span class="highlight-label">PM</span>
+            <p
+              data-pt="Coordenação de projetos com visão de negócio e tecnologia."
+              data-en="Project coordination with business and technology vision."
+              data-es="Coordinación de proyectos con visión de negocio y tecnología."
+            >
+              Coordenação de projetos com visão de negócio e tecnologia.
+            </p>
+          </article>
+
+          <article class="about-feature card">
+            <span class="highlight-label">AI</span>
+            <p
+              data-pt="Aplicação prática de IA para produtividade, automação e apoio à decisão."
+              data-en="Practical use of AI for productivity, automation and decision support."
+              data-es="Aplicación práctica de IA para productividad, automatización y apoyo a decisiones."
+            >
+              Aplicação prática de IA para produtividade, automação e apoio à decisão.
+            </p>
+          </article>
+        </div>
       </div>
-      <img src="assets/images/imagem-sistema-03.png">
+    </section>
+
+    <section class="fade">
+      <div class="container">
+        <span id="habilidades" class="anchor-point" aria-hidden="true"></span>
+        <div class="section-heading">
+          <p
+            class="section-kicker"
+            data-pt="Habilidades"
+            data-en="Skills"
+            data-es="Habilidades"
+          >
+            Habilidades
+          </p>
+          <h2
+            class="section-title"
+            data-pt="Competências que sustentam a execução e o crescimento dos projetos"
+            data-en="Capabilities that support execution and project growth"
+            data-es="Capacidades que sostienen la ejecución y el crecimiento de los proyectos"
+          >
+            Competências que sustentam a execução e o crescimento dos projetos
+          </h2>
+        </div>
+
+        <div class="skills-grid">
+          <article class="skill-card card">
+            <span class="skill-index">01</span>
+            <h3
+              data-pt="Comunicação e Stakeholders"
+              data-en="Communication and Stakeholders"
+              data-es="Comunicación y Stakeholders"
+            >
+              Comunicação e Stakeholders
+            </h3>
+            <p
+              data-pt="Alinhamento claro entre times, lideranças e partes interessadas para reduzir ruído e acelerar decisões."
+              data-en="Clear alignment among teams, leaders and stakeholders to reduce noise and accelerate decisions."
+              data-es="Alineación clara entre equipos, liderazgos y partes interesadas para reducir ruido y acelerar decisiones."
+            >
+              Alinhamento claro entre times, lideranças e partes interessadas para reduzir ruído e acelerar decisões.
+            </p>
+          </article>
+
+          <article class="skill-card card">
+            <span class="skill-index">02</span>
+            <h3
+              data-pt="Liderança de Equipes"
+              data-en="Team Leadership"
+              data-es="Liderazgo de Equipos"
+            >
+              Liderança de Equipes
+            </h3>
+            <p
+              data-pt="Condução de equipes multidisciplinares com foco em engajamento, direção clara e alta capacidade de entrega."
+              data-en="Leadership of multidisciplinary teams focused on engagement, clarity and strong delivery capacity."
+              data-es="Conducción de equipos multidisciplinarios con foco en compromiso, dirección clara y alta capacidad de entrega."
+            >
+              Condução de equipes multidisciplinares com foco em engajamento, direção clara e alta capacidade de entrega.
+            </p>
+          </article>
+
+          <article class="skill-card card">
+            <span class="skill-index">03</span>
+            <h3
+              data-pt="Gestão de Projetos"
+              data-en="Project Management"
+              data-es="Gestión de Proyectos"
+            >
+              Gestão de Projetos
+            </h3>
+            <p
+              data-pt="Planejamento, escopo, cronograma, riscos e acompanhamento de entregas com visão de ponta a ponta."
+              data-en="Planning, scope, schedule, risks and delivery tracking with an end-to-end perspective."
+              data-es="Planificación, alcance, cronograma, riesgos y seguimiento de entregas con visión de punta a punta."
+            >
+              Planejamento, escopo, cronograma, riscos e acompanhamento de entregas com visão de ponta a ponta.
+            </p>
+          </article>
+
+          <article class="skill-card card">
+            <span class="skill-index">04</span>
+            <h3
+              data-pt="Metodologias Ágeis"
+              data-en="Agile Methodologies"
+              data-es="Metodologías Ágiles"
+            >
+              Metodologias Ágeis
+            </h3>
+            <p
+              data-pt="Aplicação prática de Scrum, Kanban e ciclos de melhoria contínua para manter cadência e previsibilidade."
+              data-en="Practical use of Scrum, Kanban and continuous improvement cycles to keep cadence and predictability."
+              data-es="Aplicación práctica de Scrum, Kanban y ciclos de mejora continua para mantener ritmo y previsibilidad."
+            >
+              Aplicação prática de Scrum, Kanban e ciclos de melhoria contínua para manter cadência e previsibilidade.
+            </p>
+          </article>
+
+          <article class="skill-card card">
+            <span class="skill-index">05</span>
+            <h3
+              data-pt="Tomada de Decisão"
+              data-en="Decision Making"
+              data-es="Toma de Decisiones"
+            >
+              Tomada de Decisão
+            </h3>
+            <p
+              data-pt="Leitura estratégica de cenário, priorização e resolução de problemas com equilíbrio entre agilidade e governança."
+              data-en="Strategic scenario reading, prioritization and problem solving with balance between agility and governance."
+              data-es="Lectura estratégica del contexto, priorización y resolución de problemas con equilibrio entre agilidad y gobernanza."
+            >
+              Leitura estratégica de cenário, priorização e resolução de problemas com equilíbrio entre agilidade e governança.
+            </p>
+          </article>
+
+          <article class="skill-card card">
+            <span class="skill-index">06</span>
+            <h3
+              data-pt="IA Aplicada"
+              data-en="Applied AI"
+              data-es="IA Aplicada"
+            >
+              IA Aplicada
+            </h3>
+            <p
+              data-pt="Uso de inteligência artificial para automação, produtividade, análise e suporte a decisões operacionais."
+              data-en="Use of artificial intelligence for automation, productivity, analysis and support for operational decisions."
+              data-es="Uso de inteligencia artificial para automatización, productividad, análisis y apoyo a decisiones operativas."
+            >
+              Uso de inteligência artificial para automação, produtividade, análise e suporte a decisões operacionais.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="fade">
+      <div class="container">
+        <span id="projetos" class="anchor-point" aria-hidden="true"></span>
+        <div class="section-heading">
+          <p
+            class="section-kicker"
+            data-pt="Projetos"
+            data-en="Projects"
+            data-es="Proyectos"
+          >
+            Projetos
+          </p>
+          <h2
+            class="section-title"
+            data-pt="Entregas que conectam produto, operação e impacto real"
+            data-en="Deliveries that connect product, operations and real impact"
+            data-es="Entregas que conectan producto, operación e impacto real"
+          >
+            Entregas que conectam produto, operação e impacto real
+          </h2>
+        </div>
+
+        <div class="projects-grid">
+          <article class="project-card card">
+            <div class="project-copy">
+              <p
+                class="project-tag"
+                data-pt="Projeto em destaque"
+                data-en="Featured project"
+                data-es="Proyecto destacado"
+              >
+                Projeto em destaque
+              </p>
+              <h3>Sistema de Gestão de Refeições</h3>
+              <p
+                data-pt="Coordenação completa do projeto com metodologia ágil, incluindo planejamento, gestão de escopo, riscos, stakeholders e acompanhamento de entregas."
+                data-en="Full project coordination using agile methodology, including planning, scope management, risks, stakeholders and delivery tracking."
+                data-es="Coordinación completa del proyecto con metodología ágil, incluyendo planificación, gestión de alcance, riesgos, stakeholders y seguimiento de entregas."
+              >
+                Coordenação completa do projeto com metodologia ágil, incluindo planejamento, gestão de escopo, riscos, stakeholders e acompanhamento de entregas.
+              </p>
+
+              <button
+                type="button"
+                class="project-detail-button"
+                data-project-id="refeicoes"
+                data-pt="Ver detalhes"
+                data-en="View details"
+                data-es="Ver detalles"
+              >
+                Ver detalhes
+              </button>
+            </div>
+
+            <div class="project-media">
+              <img
+                src="assets/images/imagem-sistema-01.png"
+                alt="Tela do sistema de gestão de refeições"
+              >
+            </div>
+          </article>
+
+          <article class="project-card card">
+            <div class="project-copy">
+              <p
+                class="project-tag"
+                data-pt="Integração mobile"
+                data-en="Mobile integration"
+                data-es="Integración móvil"
+              >
+                Integração mobile
+              </p>
+              <h3>Cardápio Aluno (Curitiba App)</h3>
+              <p
+                data-pt="Integração com sistema educacional para disponibilização de cardápio escolar em aplicativo mobile, com foco em acesso simples e comunicação com o usuário."
+                data-en="Integration with the educational system to provide school menus in a mobile app, focused on simple access and user communication."
+                data-es="Integración con el sistema educativo para ofrecer el menú escolar en una aplicación móvil, con foco en acceso simple y comunicación con el usuario."
+              >
+                Integração com sistema educacional para disponibilização de cardápio escolar em aplicativo mobile, com foco em acesso simples e comunicação com o usuário.
+              </p>
+
+              <button
+                type="button"
+                class="project-detail-button"
+                data-project-id="cardapio"
+                data-pt="Ver detalhes"
+                data-en="View details"
+                data-es="Ver detalles"
+              >
+                Ver detalhes
+              </button>
+            </div>
+
+            <div class="project-media">
+              <img
+                src="assets/images/imagem-sistema-02.png"
+                alt="Tela do projeto Cardápio Aluno"
+              >
+            </div>
+          </article>
+
+          <article class="project-card card">
+            <div class="project-copy">
+              <p
+                class="project-tag"
+                data-pt="Serviço digital"
+                data-en="Digital service"
+                data-es="Servicio digital"
+              >
+                Serviço digital
+              </p>
+              <h3>Curitiba em Movimento</h3>
+              <p
+                data-pt="Sistema para reserva de espaços públicos, promovendo acesso da população a atividades esportivas e sociais com organização digital e experiência simplificada."
+                data-en="System for booking public spaces, giving people access to sports and social activities through digital organization and a simplified experience."
+                data-es="Sistema para reservar espacios públicos, promoviendo el acceso de la población a actividades deportivas y sociales con organización digital y experiencia simplificada."
+              >
+                Sistema para reserva de espaços públicos, promovendo acesso da população a atividades esportivas e sociais com organização digital e experiência simplificada.
+              </p>
+
+              <button
+                type="button"
+                class="project-detail-button"
+                data-project-id="movimento"
+                data-pt="Ver detalhes"
+                data-en="View details"
+                data-es="Ver detalles"
+              >
+                Ver detalhes
+              </button>
+            </div>
+
+            <div class="project-media">
+              <img
+                src="assets/images/imagem-sistema-03.png"
+                alt="Tela do projeto Curitiba em Movimento"
+              >
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="fade">
+      <div class="container">
+        <span id="formacao" class="anchor-point" aria-hidden="true"></span>
+        <div class="section-heading">
+          <p
+            class="section-kicker"
+            data-pt="Formação"
+            data-en="Education"
+            data-es="Formación"
+          >
+            Formação
+          </p>
+          <h2
+            class="section-title"
+            data-pt="Base acadêmica forte e desenvolvimento contínuo"
+            data-en="Strong academic foundation and continuous development"
+            data-es="Base académica sólida y desarrollo continuo"
+          >
+            Base acadêmica forte e desenvolvimento contínuo
+          </h2>
+        </div>
+
+        <div class="education-grid">
+          <article class="education-card card">
+            <h3
+              data-pt="Formação e especializações"
+              data-en="Education and specializations"
+              data-es="Formación y especializaciones"
+            >
+              Formação e especializações
+            </h3>
+            <p
+              data-pt="Formação em Ciência da Computação, complementada por MBAs e pós-graduações nas áreas de tecnologia, gestão, inovação e transformação digital."
+              data-en="Computer Science education, complemented by MBAs and postgraduate studies in technology, management, innovation and digital transformation."
+              data-es="Formación en Ciencias de la Computación, complementada por MBAs y posgrados en las áreas de tecnología, gestión, innovación y transformación digital."
+            >
+              Formação em Ciência da Computação, complementada por MBAs e pós-graduações nas áreas de tecnologia, gestão, inovação e transformação digital.
+            </p>
+          </article>
+
+          <article class="education-card card">
+            <h3
+              data-pt="Mestrado em andamento"
+              data-en="Master's degree in progress"
+              data-es="Maestría en curso"
+            >
+              Mestrado em andamento
+            </h3>
+            <p
+              data-pt="Atualmente cursando Mestrado em Ciência da Computação, ampliando repertório técnico e capacidade analítica."
+              data-en="Currently pursuing a Master's degree in Computer Science, expanding technical range and analytical capability."
+              data-es="Actualmente cursando una maestría en Ciencias de la Computación, ampliando repertorio técnico y capacidad analítica."
+            >
+              Atualmente cursando Mestrado em Ciência da Computação, ampliando repertório técnico e capacidade analítica.
+            </p>
+          </article>
+
+          <article class="education-card card">
+            <h3
+              data-pt="Certificações"
+              data-en="Certifications"
+              data-es="Certificaciones"
+            >
+              Certificações
+            </h3>
+            <p
+              data-pt="Mais de 120 certificações nas áreas de tecnologia, gestão de projetos, inovação e melhoria contínua."
+              data-en="More than 120 certifications across technology, project management, innovation and continuous improvement."
+              data-es="Más de 120 certificaciones en tecnología, gestión de proyectos, innovación y mejora continua."
+            >
+              Mais de 120 certificações nas áreas de tecnologia, gestão de projetos, inovação e melhoria contínua.
+            </p>
+          </article>
+        </div>
+
+        <div class="badges">
+          <article class="badge-card card">
+            <a
+              href="https://www.scrumstudy.com/certification/verify?type=SFC&number=1032893"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Verificar certificação SFC"
+            >
+              <img src="assets/images/sfc.png" alt="Badge da certificação SFC">
+            </a>
+          </article>
+
+          <article class="badge-card card">
+            <a
+              href="https://cursos.becompliance.com/badges/badge.php?hash=99d688c78e27e19227c2c0e6826b53e4d2c1d41b"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Verificar certificação Business Excellence"
+            >
+              <img src="assets/images/be.png" alt="Badge da certificação Business Excellence">
+            </a>
+          </article>
+
+          <article class="badge-card card">
+            <a
+              href="https://www.pmi.org/"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Abrir site do PMI"
+            >
+              <img src="assets/images/pmi.png" alt="Badge da certificação PMI">
+            </a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="fade">
+      <div class="container">
+        <span id="contato" class="anchor-point" aria-hidden="true"></span>
+        <article class="contact-card card">
+          <div class="contact-copy">
+            <p
+              class="section-kicker"
+              data-pt="Contato"
+              data-en="Contact"
+              data-es="Contacto"
+            >
+              Contato
+            </p>
+            <h2
+              class="section-title"
+              data-pt="Vamos construir algo relevante juntos"
+              data-en="Let's build something meaningful together"
+              data-es="Construyamos algo relevante juntos"
+            >
+              Vamos construir algo relevante juntos
+            </h2>
+            <p
+              class="contact-text"
+              data-pt="Se você busca alguém para liderar projetos, estruturar entregas ou acelerar resultados com tecnologia e IA, estou à disposição para conversar."
+              data-en="If you are looking for someone to lead projects, structure deliveries or accelerate results with technology and AI, I am available to talk."
+              data-es="Si buscas a alguien para liderar proyectos, estructurar entregas o acelerar resultados con tecnología e IA, estoy disponible para conversar."
+            >
+              Se você busca alguém para liderar projetos, estruturar entregas ou acelerar resultados com tecnologia e IA, estou à disposição para conversar.
+            </p>
+          </div>
+
+          <div class="contact-actions">
+            <a
+              class="btn btn-primary btn-icon btn-linkedin"
+              href="https://www.linkedin.com/in/alysson-arcas/"
+              target="_blank"
+              rel="noreferrer"
+              data-pt="LinkedIn"
+              data-en="LinkedIn"
+              data-es="LinkedIn"
+            >
+              LinkedIn
+            </a>
+            <a
+              class="btn btn-secondary btn-icon btn-email"
+              href="mailto:alysson.arcas.pro@gmail.com"
+              data-pt="Enviar e-mail"
+              data-en="Send email"
+              data-es="Enviar correo"
+            >
+              Enviar e-mail
+            </a>
+            <a
+              class="btn btn-secondary btn-icon btn-github"
+              href="https://github.com/alysson-arcas-tec"
+              target="_blank"
+              rel="noreferrer"
+              data-pt="GitHub"
+              data-en="GitHub"
+              data-es="GitHub"
+            >
+              GitHub
+            </a>
+          </div>
+        </article>
+
+        <div class="contact-top-link">
+          <a
+            class="btn btn-accent"
+            href="#home"
+            data-pt="Voltar ao topo"
+            data-en="Back to top"
+            data-es="Volver arriba"
+          >
+            Voltar ao topo
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>© 2026 Alysson Arcas</p>
+  </footer>
+
+  <div class="project-modal" id="project-modal" aria-hidden="true">
+    <div class="project-modal-backdrop" data-close-modal></div>
+
+    <div
+      class="project-modal-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="project-modal-title"
+    >
+      <button
+        type="button"
+        class="project-modal-close"
+        data-close-modal
+        aria-label="Fechar modal"
+      >
+        ×
+      </button>
+
+      <div class="project-modal-scroll">
+        <p class="project-modal-kicker" id="project-modal-kicker"></p>
+        <h2 class="project-modal-title" id="project-modal-title"></h2>
+        <div class="project-modal-content" id="project-modal-content"></div>
+      </div>
     </div>
-
   </div>
-</section>
 
-<section id="formacao" class="fade">
-  <div class="container">
-    <h2>Formação e Certificações</h2>
-    <p>🎓 Formação em Ciência da Computação, com especializações em tecnologia e gestão.</p>
-    <p>📚 Mais de 120 certificações.</p>
-
-    <div class="badges">
-      <img src="assets/images/sfc.png">
-      <img src="assets/images/be.png">
-      <img src="assets/images/pmi.png">
-    </div>
-  </div>
-</section>
-
-<section id="contato" class="fade">
-  <div class="container">
-    <h2>Contato</h2>
-    <div class="contact">
-      <a class="btn primary" href="https://www.linkedin.com/in/alysson-arcas/" target="_blank">LinkedIn</a>
-      <a class="btn" href="mailto:alysson.arcas.pro@gmail.com">Email</a>
-      <a class="btn green" href="#">Portfólio</a>
-    </div>
-  </div>
-</section>
-
-<footer>
-  <p>© 2026 Alysson Arcas</p>
-</footer>
-
-<script>
-  function setLang(lang, el){
-    document.querySelectorAll('[data-pt]').forEach(e=>{
-      e.textContent = e.getAttribute('data-'+lang)
-    })
-    document.querySelectorAll('.lang button').forEach(b=>b.classList.remove('active'))
-    el.classList.add('active')
-  }
-
-  const roles = [
-    'Coordenador de Projetos de Software',
-    'Especialista em automatização de IA'
-  ]
-  let i=0,j=0,del=false
-  const typing = document.getElementById('typing')
-
-  function type(){
-    const word = roles[i]
-    if(!del){ typing.textContent = word.substring(0,j++) }
-    else{ typing.textContent = word.substring(0,j--) }
-
-    if(j===word.length+1){ del=true; setTimeout(type,1000); return }
-    if(j===0){ del=false; i=(i+1)%roles.length }
-
-    setTimeout(type, del?40:70)
-  }
-  type()
-
-  const faders = document.querySelectorAll('.fade')
-  const obs = new IntersectionObserver((entries)=>{
-    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('visible') } })
-  },{threshold:.2})
-  faders.forEach(f=>obs.observe(f))
-</script>
-
+  <script src="js/script.js"></script>
 </body>
 </html>
