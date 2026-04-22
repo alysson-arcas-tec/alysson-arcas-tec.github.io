@@ -162,6 +162,19 @@ body::before {
   transition: background 280ms ease;
 }
 
+html.cursorly-active body,
+html.cursorly-active body * {
+  cursor: none !important;
+}
+
+html.cursorly-active input,
+html.cursorly-active textarea,
+html.cursorly-active select,
+html.cursorly-active [contenteditable]:not([contenteditable="false"]),
+html.cursorly-active [contenteditable]:not([contenteditable="false"]) * {
+  cursor: auto !important;
+}
+
 a {
   color: inherit;
 }

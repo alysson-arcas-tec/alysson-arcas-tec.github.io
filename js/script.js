@@ -14,8 +14,18 @@ const projectModalTitle = document.getElementById("project-modal-title");
 const projectModalContent = document.getElementById("project-modal-content");
 const projectModalClose = document.querySelector(".project-modal-close");
 const projectModalDismissTriggers = Array.from(document.querySelectorAll("[data-close-modal]"));
-const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const reducedMotionMedia = window.matchMedia("(prefers-reduced-motion: reduce)");
+const reducedMotion = reducedMotionMedia.matches;
+const cursorlyPointerMedia = window.matchMedia("(hover: hover) and (pointer: fine)");
+const cursorlyTouchMedia = window.matchMedia("(any-pointer: coarse)");
+const cursorlyEditableSelector =
+  'input, textarea, select, [contenteditable]:not([contenteditable="false"])';
 const themeStorageKey = "portfolio-theme";
+const cursorlyState = {
+  instance: null,
+  isEnabled: false,
+  isSuspended: false
+};
 const navItems = navLinks
   .map((link) => {
     const hash = link.getAttribute("href");
@@ -496,6 +506,7 @@ function setTheme(theme, { persist = true, animate = false } = {}) {
   }
 
   updateThemeToggleLabel();
+  syncCursorlyTheme();
 }
 
 function toggleTheme() {
@@ -862,6 +873,109 @@ function setupCanvasBackground() {
   });
 }
 
+function addMediaChangeListener(mediaQuery, handler) {
+  if (typeof mediaQuery.addEventListener === "function") {
+    mediaQuery.addEventListener("change", handler);
+    return;
+  }
+
+  if (typeof mediaQuery.addListener === "function") {
+    mediaQuery.addListener(handler);
+  }
+}
+
+function getCursorlyEffect() {
+  return {
+    name: "trail",
+    color: "rainbow"
+  };
+}
+
+function canUseCursorly() {
+  return Boolean(window.Cursorly)
+    && cursorlyPointerMedia.matches
+    && !cursorlyTouchMedia.matches
+    && !reducedMotionMedia.matches;
+}
+
+function applyCursorlyState() {
+  const shouldEnable = canUseCursorly() && !cursorlyState.isSuspended;
+  document.documentElement.classList.toggle("cursorly-active", shouldEnable);
+
+  if (!cursorlyState.instance) {
+    cursorlyState.isEnabled = false;
+    return;
+  }
+
+  if (shouldEnable) {
+    cursorlyState.instance.enable();
+    cursorlyState.instance.enableEffect();
+  } else {
+    cursorlyState.instance.disableEffect();
+    cursorlyState.instance.disable();
+  }
+
+  cursorlyState.isEnabled = shouldEnable;
+}
+
+function syncCursorlyTheme() {
+  if (!cursorlyState.instance) {
+    return;
+  }
+
+  cursorlyState.instance.setEffect(getCursorlyEffect());
+}
+
+function ensureCursorly() {
+  if (!canUseCursorly()) {
+    applyCursorlyState();
+    return;
+  }
+
+  if (!cursorlyState.instance) {
+    cursorlyState.instance = window.Cursorly.init({
+      cursor: 0,
+      effect: getCursorlyEffect()
+    });
+  }
+
+  syncCursorlyTheme();
+  applyCursorlyState();
+}
+
+function getEditableCursorTarget(target) {
+  return target instanceof Element ? target.closest(cursorlyEditableSelector) : null;
+}
+
+function setupCursorly() {
+  ensureCursorly();
+  addMediaChangeListener(reducedMotionMedia, ensureCursorly);
+  addMediaChangeListener(cursorlyPointerMedia, ensureCursorly);
+  addMediaChangeListener(cursorlyTouchMedia, ensureCursorly);
+
+  document.addEventListener("pointerover", (event) => {
+    if (!getEditableCursorTarget(event.target) || cursorlyState.isSuspended) {
+      return;
+    }
+
+    cursorlyState.isSuspended = true;
+    applyCursorlyState();
+  });
+
+  document.addEventListener("pointerout", (event) => {
+    if (!getEditableCursorTarget(event.target)) {
+      return;
+    }
+
+    if (getEditableCursorTarget(event.relatedTarget)) {
+      return;
+    }
+
+    cursorlyState.isSuspended = false;
+    applyCursorlyState();
+  });
+}
+
 projectDetailButtons.forEach((button) => {
   button.addEventListener("click", () => {
     openProjectModal(button.dataset.projectId);
@@ -919,6 +1033,7 @@ setTheme(getActiveTheme(), { persist: false });
 applyTranslations(currentLang);
 setupRevealAnimations();
 setupCanvasBackground();
+setupCursorly();
 updateActiveSection();
 
 window.addEventListener("load", () => {
