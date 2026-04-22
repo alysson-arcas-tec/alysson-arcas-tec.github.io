@@ -23,6 +23,7 @@ const cursorlyEditableSelector =
 const themeStorageKey = "portfolio-theme";
 const cursorlyState = {
   instance: null,
+  customIconIndex: null,
   isEnabled: false,
   isSuspended: false
 };
@@ -884,10 +885,28 @@ function addMediaChangeListener(mediaQuery, handler) {
   }
 }
 
+function getCursorlyIconUrl() {
+  const styles = window.getComputedStyle(document.documentElement);
+  const primary = styles.getPropertyValue("--primary").trim() || "#1f8fff";
+  const text = styles.getPropertyValue("--text").trim() || "#f2f6fb";
+  const softFill = document.documentElement.dataset.theme === "light"
+    ? "rgba(15, 125, 232, 0.14)"
+    : "rgba(31, 143, 255, 0.18)";
+  const svg = `
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
+      <circle cx="16" cy="16" r="9" fill="${softFill}" />
+      <circle cx="16" cy="16" r="7.25" stroke="${primary}" stroke-width="2.5" />
+      <circle cx="16" cy="16" r="2.75" fill="${text}" />
+      <circle cx="16" cy="16" r="1.5" fill="${primary}" />
+    </svg>
+  `;
+
+  return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+}
+
 function getCursorlyEffect() {
   return {
-    name: "trail",
-    color: "rainbow"
+    name: "none"
   };
 }
 
@@ -896,6 +915,23 @@ function canUseCursorly() {
     && cursorlyPointerMedia.matches
     && !cursorlyTouchMedia.matches
     && !reducedMotionMedia.matches;
+}
+
+function getCursorlyCanvas() {
+  return Array.from(document.querySelectorAll("body > canvas")).find((canvas) => (
+    canvas.id !== "bg" && window.getComputedStyle(canvas).zIndex === "9999"
+  )) ?? null;
+}
+
+function normalizeCursorlyCanvas() {
+  const canvas = getCursorlyCanvas();
+
+  if (!canvas) {
+    return;
+  }
+
+  canvas.style.pointerEvents = "none";
+  canvas.setAttribute("aria-hidden", "true");
 }
 
 function applyCursorlyState() {
@@ -907,9 +943,11 @@ function applyCursorlyState() {
     return;
   }
 
+  normalizeCursorlyCanvas();
+
   if (shouldEnable) {
     cursorlyState.instance.enable();
-    cursorlyState.instance.enableEffect();
+    cursorlyState.instance.disableEffect();
   } else {
     cursorlyState.instance.disableEffect();
     cursorlyState.instance.disable();
@@ -923,7 +961,18 @@ function syncCursorlyTheme() {
     return;
   }
 
+  const iconUrl = getCursorlyIconUrl();
+
+  if (cursorlyState.customIconIndex === null) {
+    cursorlyState.customIconIndex = cursorlyState.instance.addIcon(iconUrl);
+  } else {
+    cursorlyState.instance.cursorIcons[cursorlyState.customIconIndex] = iconUrl;
+  }
+
+  cursorlyState.instance.setIcon(cursorlyState.customIconIndex);
+  cursorlyState.instance.cursorImage.src = iconUrl;
   cursorlyState.instance.setEffect(getCursorlyEffect());
+  normalizeCursorlyCanvas();
 }
 
 function ensureCursorly() {
@@ -935,6 +984,7 @@ function ensureCursorly() {
   if (!cursorlyState.instance) {
     cursorlyState.instance = window.Cursorly.init({
       cursor: 0,
+      cursorSize: 40,
       effect: getCursorlyEffect()
     });
   }
