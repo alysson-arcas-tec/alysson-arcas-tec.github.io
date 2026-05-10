@@ -21,7 +21,6 @@ const documentModalTitle = document.getElementById("document-modal-title");
 const documentModalDescription = document.getElementById("document-modal-description");
 const documentModalPreviewButton = document.getElementById("document-modal-preview-button");
 const documentModalDownload = document.getElementById("document-modal-download");
-const documentModalExternal = document.getElementById("document-modal-external");
 const documentModalAgent = document.getElementById("document-modal-agent");
 const documentPreview = document.getElementById("document-preview");
 const documentPreviewStatus = document.getElementById("document-preview-status");
@@ -137,7 +136,6 @@ const projectModelLabels = {
     lastPage: "Última página",
     paginationStatus: "Página {current} de {total}",
     download: "Baixar documento",
-    openExternal: "Abrir em nova aba",
     relatedAgent: "Agente relacionado",
     noAgent: "Agente específico ainda não mapeado para este modelo.",
     viewAgent: "Ver agente",
@@ -145,14 +143,14 @@ const projectModelLabels = {
     close: "Fechar visualização do documento",
     previewPromptStatus: "Prévia sob demanda",
     previewPromptTitle: "Visualização disponível na modal",
-    previewPromptBody: "Clique em Visualizar documento para carregar a prévia aqui. Se o navegador não renderizar o arquivo, use baixar ou abrir em nova aba.",
+    previewPromptBody: "Clique em Visualizar documento para carregar a prévia aqui. Se o navegador não renderizar o arquivo, use Baixar documento.",
     loading: "Carregando prévia...",
     previewReady: "Prévia carregada no navegador.",
     svgReady: "Prévia SVG carregada.",
     previewUnavailableTitle: "Prévia não disponível neste navegador",
-    unsupportedPreview: "Este tipo de arquivo não possui pré-visualização nativa confiável no navegador. Use os botões acima para baixar ou abrir externamente.",
-    docxLibraryMissing: "A biblioteca de leitura de DOCX não foi carregada. O arquivo continua disponível para download ou abertura em nova aba.",
-    spreadsheetLibraryMissing: "A biblioteca de leitura de planilhas não foi carregada. O arquivo continua disponível para download ou abertura em nova aba.",
+    unsupportedPreview: "Este tipo de arquivo não possui pré-visualização nativa confiável no navegador. Use o botão acima para baixar o documento.",
+    docxLibraryMissing: "A biblioteca de leitura de DOCX não foi carregada. O arquivo continua disponível para download.",
+    spreadsheetLibraryMissing: "A biblioteca de leitura de planilhas não foi carregada. O arquivo continua disponível para download.",
     fetchError: "Não foi possível carregar a prévia. Para testar localmente, abra o portfólio por um servidor HTTP em vez de abrir o HTML diretamente pelo sistema de arquivos.",
     emptySpreadsheet: "A planilha não retornou linhas visíveis para pré-visualização.",
     truncatedPreview: "Prévia limitada para manter a navegação leve. Baixe o arquivo para ver o conteúdo completo.",
@@ -171,7 +169,6 @@ const projectModelLabels = {
     lastPage: "Last page",
     paginationStatus: "Page {current} of {total}",
     download: "Download document",
-    openExternal: "Open in new tab",
     relatedAgent: "Related agent",
     noAgent: "No specific agent mapped to this template yet.",
     viewAgent: "View agent",
@@ -179,14 +176,14 @@ const projectModelLabels = {
     close: "Close document preview",
     previewPromptStatus: "On-demand preview",
     previewPromptTitle: "Preview available in the modal",
-    previewPromptBody: "Click View document to load the preview here. If the browser cannot render the file, use download or open in a new tab.",
+    previewPromptBody: "Click View document to load the preview here. If the browser cannot render the file, use Download document.",
     loading: "Loading preview...",
     previewReady: "Preview loaded in the browser.",
     svgReady: "SVG preview loaded.",
     previewUnavailableTitle: "Preview unavailable in this browser",
-    unsupportedPreview: "This file type does not have a reliable native browser preview. Use the buttons above to download or open it externally.",
-    docxLibraryMissing: "The DOCX reader library did not load. The file is still available for download or opening in a new tab.",
-    spreadsheetLibraryMissing: "The spreadsheet reader library did not load. The file is still available for download or opening in a new tab.",
+    unsupportedPreview: "This file type does not have a reliable native browser preview. Use the button above to download the document.",
+    docxLibraryMissing: "The DOCX reader library did not load. The file is still available for download.",
+    spreadsheetLibraryMissing: "The spreadsheet reader library did not load. The file is still available for download.",
     fetchError: "The preview could not be loaded. To test locally, serve the portfolio through HTTP instead of opening the HTML file directly.",
     emptySpreadsheet: "The spreadsheet did not return visible rows for preview.",
     truncatedPreview: "Preview limited to keep navigation light. Download the file to see the full content.",
@@ -205,7 +202,6 @@ const projectModelLabels = {
     lastPage: "Última página",
     paginationStatus: "Página {current} de {total}",
     download: "Descargar documento",
-    openExternal: "Abrir en nueva pestaña",
     relatedAgent: "Agente relacionado",
     noAgent: "Aún no hay un agente específico mapeado para este modelo.",
     viewAgent: "Ver agente",
@@ -213,14 +209,14 @@ const projectModelLabels = {
     close: "Cerrar visualización del documento",
     previewPromptStatus: "Vista previa bajo demanda",
     previewPromptTitle: "Visualización disponible en la modal",
-    previewPromptBody: "Haz clic en Visualizar documento para cargar la vista previa aquí. Si el navegador no renderiza el archivo, usa descargar o abrir en una nueva pestaña.",
+    previewPromptBody: "Haz clic en Visualizar documento para cargar la vista previa aquí. Si el navegador no renderiza el archivo, usa Descargar documento.",
     loading: "Cargando vista previa...",
     previewReady: "Vista previa cargada en el navegador.",
     svgReady: "Vista previa SVG cargada.",
     previewUnavailableTitle: "Vista previa no disponible en este navegador",
-    unsupportedPreview: "Este tipo de archivo no tiene una vista previa nativa confiable en el navegador. Usa los botones superiores para descargarlo o abrirlo externamente.",
-    docxLibraryMissing: "La biblioteca de lectura de DOCX no se cargó. El archivo sigue disponible para descarga o apertura en una nueva pestaña.",
-    spreadsheetLibraryMissing: "La biblioteca de lectura de planillas no se cargó. El archivo sigue disponible para descarga o apertura en una nueva pestaña.",
+    unsupportedPreview: "Este tipo de archivo no tiene una vista previa nativa confiable en el navegador. Usa el botón superior para descargarlo.",
+    docxLibraryMissing: "La biblioteca de lectura de DOCX no se cargó. El archivo sigue disponible para descarga.",
+    spreadsheetLibraryMissing: "La biblioteca de lectura de planillas no se cargó. El archivo sigue disponible para descarga.",
     fetchError: "No fue posible cargar la vista previa. Para probar localmente, abre el portafolio con un servidor HTTP en lugar de abrir el HTML directamente desde el sistema de archivos.",
     emptySpreadsheet: "La planilla no devolvió filas visibles para la vista previa.",
     truncatedPreview: "Vista previa limitada para mantener la navegación ligera. Descarga el archivo para ver el contenido completo.",
@@ -1268,11 +1264,6 @@ function renderDocumentModelModal(documentId) {
     documentModalDownload.href = documentModel.path;
     documentModalDownload.setAttribute("download", documentModel.fileName);
     documentModalDownload.textContent = labels.download;
-  }
-
-  if (documentModalExternal) {
-    documentModalExternal.href = documentModel.path;
-    documentModalExternal.textContent = labels.openExternal;
   }
 
   if (documentModalClose) {
