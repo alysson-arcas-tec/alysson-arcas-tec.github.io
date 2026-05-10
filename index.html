@@ -43,6 +43,7 @@
           <a href="#sobre" data-pt="Sobre" data-en="About" data-es="Sobre">Sobre</a>
           <a href="#habilidades" data-pt="Habilidades" data-en="Skills" data-es="Habilidades">Habilidades</a>
           <a href="#projetos" data-pt="Projetos" data-en="Projects" data-es="Proyectos">Projetos</a>
+          <a href="#modelo-projetos" data-pt="Modelos" data-en="Templates" data-es="Modelos">Modelos</a>
           <a href="#formacao" data-pt="Formação" data-en="Education" data-es="Formación">Formação</a>
           <a href="#contato" data-pt="Contato" data-en="Contact" data-es="Contacto">Contato</a>
         </nav>
@@ -570,6 +571,62 @@
       </div>
     </section>
 
+    <section class="fade project-models-section">
+      <div class="container">
+        <span id="modelo-projetos" class="anchor-point" aria-hidden="true"></span>
+
+        <div class="project-models-hero card">
+          <div class="project-models-copy">
+            <p
+              class="section-kicker"
+              data-pt="Modelo de Projetos"
+              data-en="Project Templates"
+              data-es="Modelos de Proyecto"
+            >
+              Modelo de Projetos
+            </p>
+            <h2
+              class="section-title"
+              data-pt="Documentos-modelo para organizar projetos de ponta a ponta"
+              data-en="Document templates to organize projects end to end"
+              data-es="Documentos modelo para organizar proyectos de punta a punta"
+            >
+              Documentos-modelo para organizar projetos de ponta a ponta
+            </h2>
+            <p
+              class="project-models-intro"
+              data-pt="Biblioteca enxuta de modelos para planejamento, documentação e acompanhamento de projetos, com prévia, download e apoio de agentes de IA quando disponível."
+              data-en="A lean library of templates for project planning, documentation and tracking, with preview, download and AI agent support when available."
+              data-es="Biblioteca compacta de modelos para planificación, documentación y seguimiento de proyectos, con vista previa, descarga y apoyo de agentes de IA cuando esté disponible."
+            >
+              Biblioteca enxuta de modelos para planejamento, documentação e acompanhamento de projetos, com prévia, download e apoio de agentes de IA quando disponível.
+            </p>
+          </div>
+
+          <div class="project-models-summary" aria-label="Resumo da biblioteca de modelos">
+            <strong>13</strong>
+            <span
+              data-pt="modelos publicados"
+              data-en="published templates"
+              data-es="modelos publicados"
+            >
+              modelos publicados
+            </span>
+            <strong>10</strong>
+            <span
+              data-pt="agentes relacionados"
+              data-en="related agents"
+              data-es="agentes relacionados"
+            >
+              agentes relacionados
+            </span>
+          </div>
+        </div>
+
+        <div class="project-model-grid" id="project-model-grid"></div>
+      </div>
+    </section>
+
     <section class="fade">
       <div class="container">
         <span id="formacao" class="anchor-point" aria-hidden="true"></span>
@@ -793,7 +850,52 @@
     </div>
   </div>
 
+  <div class="document-modal" id="document-modal" aria-hidden="true">
+    <div class="document-modal-backdrop" data-close-document-modal></div>
+
+    <div
+      class="document-modal-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="document-modal-title"
+    >
+      <button
+        type="button"
+        class="document-modal-close"
+        data-close-document-modal
+        aria-label="Fechar visualização do documento"
+      >
+        ×
+      </button>
+
+      <div class="document-modal-scroll">
+        <div class="document-modal-heading">
+          <p class="document-modal-kicker" id="document-modal-kicker">Modelo de Projeto</p>
+          <h2 class="document-modal-title" id="document-modal-title"></h2>
+          <p class="document-modal-description" id="document-modal-description"></p>
+
+          <div class="document-modal-actions">
+            <button class="btn btn-primary" id="document-modal-preview-button" type="button">Visualizar documento</button>
+            <a class="btn btn-primary" id="document-modal-download" href="#" download>Baixar documento</a>
+            <a class="btn btn-secondary" id="document-modal-external" href="#" target="_blank" rel="noreferrer">Abrir em nova aba</a>
+          </div>
+        </div>
+
+        <div class="document-agent-panel" id="document-modal-agent"></div>
+
+        <div class="document-preview-shell">
+          <div class="document-preview-toolbar">
+            <span id="document-preview-status">Carregando prévia...</span>
+          </div>
+          <div class="document-preview" id="document-preview"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script src="https://cdn.jsdelivr.net/gh/iamashruu/cursorly.js@latest/dist/cursorly.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mammoth/mammoth.browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
   <script src="js/script.js"></script>
 </body>
 </html>

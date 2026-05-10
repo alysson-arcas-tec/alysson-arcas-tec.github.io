@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="800" viewBox="0 0 1920 800" role="img" aria-labelledby="title desc">
+<title id="title">Timeline — Sistema MK Barbearia</title>
+<desc id="desc">Timeline em barras horizontais com sprints, datas e marcos do projeto.</desc>
+<rect width="1920" height="800" fill="#FFFFFF"/>
+<text x="80" y="82" font-family="Arial, Helvetica, sans-serif" font-size="42" font-weight="700" fill="#1F4E79">Timeline — Sistema MK Barbearia</text>
+<text x="82" y="122" font-family="Arial, Helvetica, sans-serif" font-size="21" fill="#64748B">Planejamento visual baseado em sprints de 2 semanas | Início do projeto: 05/04/2026</text>
+<rect x="80" y="135" width="1760" height="570" rx="18" fill="#FFFFFF" stroke="#D9E2EC" stroke-width="2"/>
+<text x="120" y="178" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" fill="#1F4E79">Fase / Sprint</text>
+<line x1="105" y1="188" x2="1810" y2="188" stroke="#D9E2EC" stroke-width="2"/>
+<line x1="380" y1="165" x2="380" y2="650" stroke="#D9E2EC" stroke-width="1"/>
+<text x="392" y="154" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#1F4E79">S1</text>
+<text x="392" y="174" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#1F4E79">05/04</text>
+<line x1="478" y1="165" x2="478" y2="650" stroke="#D9E2EC" stroke-width="1"/>
+<text x="490" y="154" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#1F4E79">S2</text>
+<text x="490" y="174" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#1F4E79">12/04</text>
+<line x1="577" y1="165" x2="577" y2="650" stroke="#D9E2EC" stroke-width="1"/>
+<text x="589" y="154" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#1F4E79">S3</text>
+<text x="589" y="174" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#1F4E79">19/04</text>
+<line x1="675" y1="165" x2="675" y2="650" stroke="#D9E2EC" stroke-width="1"/>
+<text x="687" y="154" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#1F4E79">S4</text>
+<text x="687" y="174" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#1F4E79">26/04</text>
+<line x1="774" y1="165" x2="774" y2="650" stroke="#D9E2EC" stroke-width="1"/>
+<text x="786" y="154" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#1F4E79">S5</text>
+<text x="786" y="174" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#1F4E79">03/05</text>
+<line x1="872" y1="165" x2="872" y2="650" stroke="#D9E2EC" stroke-width="1"/>
+<text x="884" y="154" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#1F4E79">S6</text>
+<text x="884" y="174" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#1F4E79">10/05</text>
+<line x1="971" y1="165" x2="971" y2="650" stroke="#D9E2EC" stroke-width="1"/>
+<text x="983" y="154" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#1F4E79">S7</text>
+<text x="983" y="174" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#1F4E79">17/05</text>
+<line x1="1070" y1="165" x2="1070" y2="650" stroke="#D9E2EC" stroke-width="1"/>
+<text x="1082" y="154" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#1F4E79">S8</text>
+<text x="1082" y="174" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#1F4E79">24/05</text>
+<line x1="1168" y1="165" x2="1168" y2="650" stroke="#D9E2EC" stroke-width="1"/>
+<text x="1180" y="154" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#1F4E79">S9</text>
+<text x="1180" y="174" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#1F4E79">31/05</text>
+<line x1="1267" y1="165" x2="1267" y2="650" stroke="#D9E2EC" stroke-width="1"/>
+<text x="1279" y="154" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#1F4E79">S10</text>
+<text x="1279" y="174" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#1F4E79">07/06</text>
+<line x1="1365" y1="165" x2="1365" y2="650" stroke="#D9E2EC" stroke-width="1"/>
+<text x="1377" y="154" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#1F4E79">S11</text>
+<text x="1377" y="174" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#1F4E79">14/06</text>
+<line x1="1464" y1="165" x2="1464" y2="650" stroke="#D9E2EC" stroke-width="1"/>
+<text x="1476" y="154" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#1F4E79">S12</text>
+<text x="1476" y="174" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#1F4E79">21/06</text>
+<line x1="1562" y1="165" x2="1562" y2="650" stroke="#D9E2EC" stroke-width="1"/>
+<text x="1574" y="154" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#1F4E79">S13</text>
+<text x="1574" y="174" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#1F4E79">28/06</text>
+<line x1="1661" y1="165" x2="1661" y2="650" stroke="#D9E2EC" stroke-width="1"/>
+<text x="1673" y="154" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#1F4E79">S14</text>
+<text x="1673" y="174" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#1F4E79">05/07</text>
+<line x1="1760" y1="165" x2="1760" y2="650" stroke="#D9E2EC" stroke-width="1"/>
+<text x="120" y="223" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700" fill="#1F2933">Sprint 0</text>
+<text x="120" y="248" font-family="Arial, Helvetica, sans-serif" font-size="15" fill="#64748B">Setup, arquitetura, wireframes</text>
+<rect x="388" y="204" width="181" height="38" rx="14" fill="#1F4E79"/>
+<text x="478.5" y="229" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700" fill="#FFFFFF">05/04–18/04</text>
+<text x="120" y="293" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700" fill="#1F2933">Sprint 1</text>
+<text x="120" y="318" font-family="Arial, Helvetica, sans-serif" font-size="15" fill="#64748B">Página inicial e autenticação</text>
+<rect x="585" y="274" width="181" height="38" rx="14" fill="#2E75B6"/>
+<text x="675.5" y="299" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700" fill="#FFFFFF">19/04–02/05</text>
+<text x="120" y="363" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700" fill="#1F2933">Sprint 2</text>
+<text x="120" y="388" font-family="Arial, Helvetica, sans-serif" font-size="15" fill="#64748B">Tela logada e agendamento</text>
+<rect x="782" y="344" width="181" height="38" rx="14" fill="#2E75B6"/>
+<text x="872.5" y="369" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700" fill="#FFFFFF">03/05–16/05</text>
+<text x="120" y="433" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700" fill="#1F2933">Sprint 3</text>
+<text x="120" y="458" font-family="Arial, Helvetica, sans-serif" font-size="15" fill="#64748B">Histórico, contato e painel admin</text>
+<rect x="979" y="414" width="181" height="38" rx="14" fill="#2E75B6"/>
+<text x="1069.5" y="439" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700" fill="#FFFFFF">17/05–30/05</text>
+<text x="120" y="503" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700" fill="#1F2933">Sprint 4</text>
+<text x="120" y="528" font-family="Arial, Helvetica, sans-serif" font-size="15" fill="#64748B">Admins, ajustes e integração</text>
+<rect x="1176" y="484" width="181" height="38" rx="14" fill="#2E75B6"/>
+<text x="1266.5" y="509" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700" fill="#FFFFFF">31/05–13/06</text>
+<text x="120" y="573" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700" fill="#1F2933">Sprint 5</text>
+<text x="120" y="598" font-family="Arial, Helvetica, sans-serif" font-size="15" fill="#64748B">Testes e homologação</text>
+<rect x="1373" y="554" width="181" height="38" rx="14" fill="#1F4E79"/>
+<text x="1463.5" y="579" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700" fill="#FFFFFF">14/06–27/06</text>
+<text x="120" y="643" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700" fill="#1F2933">Sprint 6</text>
+<text x="120" y="668" font-family="Arial, Helvetica, sans-serif" font-size="15" fill="#64748B">Deploy, documentação e encerramento</text>
+<rect x="1570" y="624" width="181" height="38" rx="14" fill="#1F4E79"/>
+<text x="1660.5" y="649" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700" fill="#FFFFFF">28/06–11/07</text>
+<line x1="380" y1="175" x2="380" y2="655" stroke="#C9A84C" stroke-width="2"/>
+<polygon points="380,655 395,670 380,685 365,670" fill="#C9A84C"/>
+<text x="380" y="714" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#1F4E79">Kickoff</text>
+<line x1="971" y1="175" x2="971" y2="655" stroke="#C9A84C" stroke-width="2"/>
+<polygon points="971,655 986,670 971,685 956,670" fill="#C9A84C"/>
+<text x="971" y="714" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#1F4E79">Entrega Parcial</text>
+<line x1="1365" y1="175" x2="1365" y2="655" stroke="#C9A84C" stroke-width="2"/>
+<polygon points="1365,655 1380,670 1365,685 1350,670" fill="#C9A84C"/>
+<text x="1365" y="714" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#1F4E79">Homologação</text>
+<line x1="1760" y1="175" x2="1760" y2="655" stroke="#C9A84C" stroke-width="2"/>
+<polygon points="1760,655 1775,670 1760,685 1745,670" fill="#C9A84C"/>
+<text x="1760" y="714" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#1F4E79">Go-Live</text>
+<rect x="80" y="728" width="1760" height="52" rx="12" fill="#EAF2F8"/>
+<rect x="118" y="738" width="54" height="20" rx="8" fill="#1F4E79"/>
+<text x="185" y="754" font-family="Arial, Helvetica, sans-serif" font-size="16" fill="#1F2933">Planejamento / transição</text>
+<rect x="430" y="738" width="54" height="20" rx="8" fill="#2E75B6"/>
+<text x="497" y="754" font-family="Arial, Helvetica, sans-serif" font-size="16" fill="#1F2933">Desenvolvimento</text>
+<polygon points="735,736 747,748 735,760 723,748" fill="#C9A84C"/>
+<text x="760" y="754" font-family="Arial, Helvetica, sans-serif" font-size="16" fill="#1F2933">Marcos do projeto</text>
+<text x="1460" y="754" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700" fill="#1F4E79">Go-live previsto: 11/07/2026</text>
+</svg>

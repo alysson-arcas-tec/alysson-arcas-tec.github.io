@@ -14,6 +14,19 @@ const projectModalTitle = document.getElementById("project-modal-title");
 const projectModalContent = document.getElementById("project-modal-content");
 const projectModalClose = document.querySelector(".project-modal-close");
 const projectModalDismissTriggers = Array.from(document.querySelectorAll("[data-close-modal]"));
+const projectModelGrid = document.getElementById("project-model-grid");
+const documentModal = document.getElementById("document-modal");
+const documentModalKicker = document.getElementById("document-modal-kicker");
+const documentModalTitle = document.getElementById("document-modal-title");
+const documentModalDescription = document.getElementById("document-modal-description");
+const documentModalPreviewButton = document.getElementById("document-modal-preview-button");
+const documentModalDownload = document.getElementById("document-modal-download");
+const documentModalExternal = document.getElementById("document-modal-external");
+const documentModalAgent = document.getElementById("document-modal-agent");
+const documentPreview = document.getElementById("document-preview");
+const documentPreviewStatus = document.getElementById("document-preview-status");
+const documentModalClose = document.querySelector(".document-modal-close");
+const documentModalDismissTriggers = Array.from(document.querySelectorAll("[data-close-document-modal]"));
 const reducedMotionMedia = window.matchMedia("(prefers-reduced-motion: reduce)");
 const reducedMotion = reducedMotionMedia.matches;
 const cursorlyPointerMedia = window.matchMedia("(hover: hover) and (pointer: fine)");
@@ -75,6 +88,10 @@ let pendingNavigationHash = "";
 let pendingNavigationExpiry = 0;
 let pendingNavigationTimer;
 let activeProjectId = "";
+let activeDocumentModelId = "";
+let documentPreviewRequestId = 0;
+let currentProjectModelPage = 0;
+const projectModelPageSize = 3;
 
 const modalLabels = {
   pt: {
@@ -102,6 +119,495 @@ const themeLabels = {
     switchToLight: "Activar modo claro"
   }
 };
+
+const projectAutomationRepositoryBaseUrl =
+  "https://github.com/alysson-arcas-tec/ai-gerador-documentos/blob/main/project-automatizacao-documentos";
+
+const projectModelLabels = {
+  pt: {
+    libraryKicker: "Modelo de Projeto",
+    nameColumn: "Nome",
+    summaryColumn: "Resumo",
+    actionColumn: "Ação",
+    viewDocument: "Visualizar documento",
+    moreDetails: "Mais detalhes",
+    previousPage: "Anterior",
+    nextPage: "Próxima",
+    firstPage: "Primeira página",
+    lastPage: "Última página",
+    paginationStatus: "Página {current} de {total}",
+    download: "Baixar documento",
+    openExternal: "Abrir em nova aba",
+    relatedAgent: "Agente relacionado",
+    noAgent: "Agente específico ainda não mapeado para este modelo.",
+    viewAgent: "Ver agente",
+    agentDetails: "Ver mais detalhes sobre o agente",
+    close: "Fechar visualização do documento",
+    previewPromptStatus: "Prévia sob demanda",
+    previewPromptTitle: "Visualização disponível na modal",
+    previewPromptBody: "Clique em Visualizar documento para carregar a prévia aqui. Se o navegador não renderizar o arquivo, use baixar ou abrir em nova aba.",
+    loading: "Carregando prévia...",
+    previewReady: "Prévia carregada no navegador.",
+    svgReady: "Prévia SVG carregada.",
+    previewUnavailableTitle: "Prévia não disponível neste navegador",
+    unsupportedPreview: "Este tipo de arquivo não possui pré-visualização nativa confiável no navegador. Use os botões acima para baixar ou abrir externamente.",
+    docxLibraryMissing: "A biblioteca de leitura de DOCX não foi carregada. O arquivo continua disponível para download ou abertura em nova aba.",
+    spreadsheetLibraryMissing: "A biblioteca de leitura de planilhas não foi carregada. O arquivo continua disponível para download ou abertura em nova aba.",
+    fetchError: "Não foi possível carregar a prévia. Para testar localmente, abra o portfólio por um servidor HTTP em vez de abrir o HTML diretamente pelo sistema de arquivos.",
+    emptySpreadsheet: "A planilha não retornou linhas visíveis para pré-visualização.",
+    truncatedPreview: "Prévia limitada para manter a navegação leve. Baixe o arquivo para ver o conteúdo completo.",
+    docxWarning: "Alguns detalhes de formatação do DOCX podem não aparecer exatamente como no Word."
+  },
+  en: {
+    libraryKicker: "Project Template",
+    nameColumn: "Name",
+    summaryColumn: "Summary",
+    actionColumn: "Action",
+    viewDocument: "View document",
+    moreDetails: "More details",
+    previousPage: "Previous",
+    nextPage: "Next",
+    firstPage: "First page",
+    lastPage: "Last page",
+    paginationStatus: "Page {current} of {total}",
+    download: "Download document",
+    openExternal: "Open in new tab",
+    relatedAgent: "Related agent",
+    noAgent: "No specific agent mapped to this template yet.",
+    viewAgent: "View agent",
+    agentDetails: "See more agent details",
+    close: "Close document preview",
+    previewPromptStatus: "On-demand preview",
+    previewPromptTitle: "Preview available in the modal",
+    previewPromptBody: "Click View document to load the preview here. If the browser cannot render the file, use download or open in a new tab.",
+    loading: "Loading preview...",
+    previewReady: "Preview loaded in the browser.",
+    svgReady: "SVG preview loaded.",
+    previewUnavailableTitle: "Preview unavailable in this browser",
+    unsupportedPreview: "This file type does not have a reliable native browser preview. Use the buttons above to download or open it externally.",
+    docxLibraryMissing: "The DOCX reader library did not load. The file is still available for download or opening in a new tab.",
+    spreadsheetLibraryMissing: "The spreadsheet reader library did not load. The file is still available for download or opening in a new tab.",
+    fetchError: "The preview could not be loaded. To test locally, serve the portfolio through HTTP instead of opening the HTML file directly.",
+    emptySpreadsheet: "The spreadsheet did not return visible rows for preview.",
+    truncatedPreview: "Preview limited to keep navigation light. Download the file to see the full content.",
+    docxWarning: "Some DOCX formatting details may not look exactly like Word."
+  },
+  es: {
+    libraryKicker: "Modelo de Proyecto",
+    nameColumn: "Nombre",
+    summaryColumn: "Resumen",
+    actionColumn: "Acción",
+    viewDocument: "Visualizar documento",
+    moreDetails: "Más detalles",
+    previousPage: "Anterior",
+    nextPage: "Siguiente",
+    firstPage: "Primera página",
+    lastPage: "Última página",
+    paginationStatus: "Página {current} de {total}",
+    download: "Descargar documento",
+    openExternal: "Abrir en nueva pestaña",
+    relatedAgent: "Agente relacionado",
+    noAgent: "Aún no hay un agente específico mapeado para este modelo.",
+    viewAgent: "Ver agente",
+    agentDetails: "Ver más detalles del agente",
+    close: "Cerrar visualización del documento",
+    previewPromptStatus: "Vista previa bajo demanda",
+    previewPromptTitle: "Visualización disponible en la modal",
+    previewPromptBody: "Haz clic en Visualizar documento para cargar la vista previa aquí. Si el navegador no renderiza el archivo, usa descargar o abrir en una nueva pestaña.",
+    loading: "Cargando vista previa...",
+    previewReady: "Vista previa cargada en el navegador.",
+    svgReady: "Vista previa SVG cargada.",
+    previewUnavailableTitle: "Vista previa no disponible en este navegador",
+    unsupportedPreview: "Este tipo de archivo no tiene una vista previa nativa confiable en el navegador. Usa los botones superiores para descargarlo o abrirlo externamente.",
+    docxLibraryMissing: "La biblioteca de lectura de DOCX no se cargó. El archivo sigue disponible para descarga o apertura en una nueva pestaña.",
+    spreadsheetLibraryMissing: "La biblioteca de lectura de planillas no se cargó. El archivo sigue disponible para descarga o apertura en una nueva pestaña.",
+    fetchError: "No fue posible cargar la vista previa. Para probar localmente, abre el portafolio con un servidor HTTP en lugar de abrir el HTML directamente desde el sistema de archivos.",
+    emptySpreadsheet: "La planilla no devolvió filas visibles para la vista previa.",
+    truncatedPreview: "Vista previa limitada para mantener la navegación ligera. Descarga el archivo para ver el contenido completo.",
+    docxWarning: "Algunos detalles de formato del DOCX pueden no verse exactamente como en Word."
+  }
+};
+
+function getAgentFileUrl(agentId) {
+  return `${projectAutomationRepositoryBaseUrl}/agents/${agentId}.json`;
+}
+
+const projectModelAgents = {
+  "wbs-dictionary": {
+    id: "wbs-dictionary",
+    title: {
+      pt: "Agente de Dicionário da EAP",
+      en: "WBS Dictionary Agent",
+      es: "Agente de Diccionario de la EDT"
+    },
+    summary: {
+      pt: "Gera o dicionário da EAP a partir do escopo e de respostas complementares.",
+      en: "Generates the WBS dictionary from the project scope and complementary answers.",
+      es: "Genera el diccionario de la EDT a partir del alcance y respuestas complementarias."
+    },
+    href: getAgentFileUrl("wbs-dictionary")
+  },
+  "infrastructure-sizing": {
+    id: "infrastructure-sizing",
+    title: {
+      pt: "Agente de Infraestrutura e Arquitetura",
+      en: "Infrastructure and Architecture Agent",
+      es: "Agente de Infraestructura y Arquitectura"
+    },
+    summary: {
+      pt: "Automatiza o documento de dimensionamento técnico, ambientes, integrações, segurança e premissas operacionais.",
+      en: "Automates the technical sizing document, environments, integrations, security and operating assumptions.",
+      es: "Automatiza el documento de dimensionamiento técnico, ambientes, integraciones, seguridad y premisas operativas."
+    },
+    href: getAgentFileUrl("infrastructure-sizing")
+  },
+  "team-directory": {
+    id: "team-directory",
+    title: {
+      pt: "Agente de Diretório da Equipe",
+      en: "Team Directory Agent",
+      es: "Agente de Directorio del Equipo"
+    },
+    summary: {
+      pt: "Monta o diretório da equipe com papéis, contatos, responsabilidades e informações operacionais do projeto.",
+      en: "Builds the team directory with roles, contacts, responsibilities and project operating information.",
+      es: "Monta el directorio del equipo con roles, contactos, responsabilidades e información operativa del proyecto."
+    },
+    href: getAgentFileUrl("team-directory")
+  },
+  "status-report": {
+    id: "status-report",
+    title: {
+      pt: "Agente de Status Report",
+      en: "Status Report Agent",
+      es: "Agente de Status Report"
+    },
+    summary: {
+      pt: "Gera relatórios periódicos com andamento, riscos, próximos passos e leitura executiva do projeto.",
+      en: "Generates periodic reports with progress, risks, next steps and an executive project view.",
+      es: "Genera reportes periódicos con avance, riesgos, próximos pasos y lectura ejecutiva del proyecto."
+    },
+    href: getAgentFileUrl("status-report")
+  },
+  "project-timeline": {
+    id: "project-timeline",
+    title: {
+      pt: "Agente de Timeline do Projeto",
+      en: "Project Timeline Agent",
+      es: "Agente de Timeline del Proyecto"
+    },
+    summary: {
+      pt: "Cria uma timeline visual do projeto com fases, ciclos, marcos e entregas principais.",
+      en: "Creates a visual project timeline with phases, cycles, milestones and key deliveries.",
+      es: "Crea una línea de tiempo visual del proyecto con fases, ciclos, hitos y entregas principales."
+    },
+    href: getAgentFileUrl("project-timeline")
+  },
+  "cycle-details": {
+    id: "cycle-details",
+    title: {
+      pt: "Agente de Detalhamento dos Ciclos",
+      en: "Cycle Details Agent",
+      es: "Agente de Detalle de Ciclos"
+    },
+    summary: {
+      pt: "Gera a planilha de ciclos com métricas, datas, entregas, capacidade e acompanhamento por sprint.",
+      en: "Generates the cycle spreadsheet with metrics, dates, deliveries, capacity and sprint tracking.",
+      es: "Genera la planilla de ciclos con métricas, fechas, entregas, capacidad y seguimiento por sprint."
+    },
+    href: getAgentFileUrl("cycle-details")
+  },
+  "acceptance-term": {
+    id: "acceptance-term",
+    title: {
+      pt: "Agente de Termo de Aceite",
+      en: "Acceptance Term Agent",
+      es: "Agente de Término de Aceptación"
+    },
+    summary: {
+      pt: "Preenche o termo de aceite de entrega por sprint ou ciclo com critérios e responsáveis.",
+      en: "Fills the delivery acceptance term by sprint or cycle with criteria and owners.",
+      es: "Completa el término de aceptación por sprint o ciclo con criterios y responsables."
+    },
+    href: getAgentFileUrl("acceptance-term")
+  },
+  "sprint-backlog": {
+    id: "sprint-backlog",
+    title: {
+      pt: "Agente de Backlog de Sprint",
+      en: "Sprint Backlog Agent",
+      es: "Agente de Backlog de Sprint"
+    },
+    summary: {
+      pt: "Gera backlog, alocação, riscos e indicadores de capacidade para acompanhamento da sprint.",
+      en: "Generates backlog, allocation, risks and capacity indicators for sprint tracking.",
+      es: "Genera backlog, asignación, riesgos e indicadores de capacidad para el seguimiento de la sprint."
+    },
+    href: getAgentFileUrl("sprint-backlog")
+  },
+  "kickoff-minutes": {
+    id: "kickoff-minutes",
+    title: {
+      pt: "Agente de Ata de Kick-off",
+      en: "Kick-off Minutes Agent",
+      es: "Agente de Acta de Kick-off"
+    },
+    summary: {
+      pt: "Gera a ata inicial do projeto com participantes, objetivos, decisões, pendências e próximos passos.",
+      en: "Generates the project kick-off minutes with attendees, goals, decisions, pending items and next steps.",
+      es: "Genera el acta inicial del proyecto con participantes, objetivos, decisiones, pendientes y próximos pasos."
+    },
+    href: getAgentFileUrl("kickoff-minutes")
+  },
+  "retrospective-minutes": {
+    id: "retrospective-minutes",
+    title: {
+      pt: "Agente de Ata de Retrospectiva",
+      en: "Retrospective Minutes Agent",
+      es: "Agente de Acta de Retrospectiva"
+    },
+    summary: {
+      pt: "Gera a ata de retrospectiva com aprendizados, ações de melhoria e acordos para os próximos ciclos.",
+      en: "Generates retrospective minutes with learnings, improvement actions and agreements for upcoming cycles.",
+      es: "Genera el acta de retrospectiva con aprendizajes, acciones de mejora y acuerdos para próximos ciclos."
+    },
+    href: getAgentFileUrl("retrospective-minutes")
+  }
+};
+
+const projectModelDocuments = [
+  {
+    id: "escopo",
+    title: "Escopo",
+    category: {
+      pt: "Iniciação",
+      en: "Initiation",
+      es: "Inicio"
+    },
+    extension: ".docx",
+    fileName: "01-escopo.docx",
+    path: "assets/documentos-modelo/01-escopo.docx",
+    description: {
+      pt: "Modelo base para registrar objetivos, contexto, premissas, restrições, entregas e critérios iniciais do projeto.",
+      en: "Base template for recording goals, context, assumptions, constraints, deliveries and initial project criteria.",
+      es: "Modelo base para registrar objetivos, contexto, premisas, restricciones, entregas y criterios iniciales del proyecto."
+    }
+  },
+  {
+    id: "estimativa-sfp",
+    title: "Estimativa SFP - Sistema MK Barbearia",
+    category: {
+      pt: "Estimativa",
+      en: "Estimation",
+      es: "Estimación"
+    },
+    extension: ".docx",
+    fileName: "02-estimativa-sfp-sistema-mk-barbearia.docx",
+    path: "assets/documentos-modelo/02-estimativa-sfp-sistema-mk-barbearia.docx",
+    description: {
+      pt: "Documento para apoiar estimativa funcional, esforço, tamanho e planejamento inicial do Sistema MK Barbearia.",
+      en: "Document to support functional estimation, effort, sizing and initial planning for the MK Barber Shop System.",
+      es: "Documento para apoyar la estimación funcional, esfuerzo, tamaño y planificación inicial del Sistema MK Barbearia."
+    }
+  },
+  {
+    id: "plano-projeto",
+    title: "Plano do Projeto",
+    category: {
+      pt: "Planejamento",
+      en: "Planning",
+      es: "Planificación"
+    },
+    extension: ".docx",
+    fileName: "03-plano-do-projeto.docx",
+    path: "assets/documentos-modelo/03-plano-do-projeto.docx",
+    description: {
+      pt: "Documento central para consolidar governança, cronograma, comunicação, riscos e estratégia de execução.",
+      en: "Central document for consolidating governance, schedule, communication, risks and execution strategy.",
+      es: "Documento central para consolidar gobernanza, cronograma, comunicación, riesgos y estrategia de ejecución."
+    }
+  },
+  {
+    id: "dicionario-eap",
+    title: "Dicionário da EAP",
+    category: {
+      pt: "Escopo",
+      en: "Scope",
+      es: "Alcance"
+    },
+    extension: ".docx",
+    fileName: "04-dicionario-da-eap.docx",
+    path: "assets/documentos-modelo/04-dicionario-da-eap.docx",
+    agentId: "wbs-dictionary",
+    description: {
+      pt: "Detalha os pacotes de trabalho da EAP, critérios de aceite, premissas e itens fora do escopo.",
+      en: "Details WBS work packages, acceptance criteria, assumptions and out-of-scope items.",
+      es: "Detalla los paquetes de trabajo de la EDT, criterios de aceptación, premisas e ítems fuera de alcance."
+    }
+  },
+  {
+    id: "infraestrutura-arquitetura",
+    title: "Dimensionamento de Infraestrutura e Arquitetura",
+    category: {
+      pt: "Arquitetura",
+      en: "Architecture",
+      es: "Arquitectura"
+    },
+    extension: ".docx",
+    fileName: "05-dimensionamento-de-infraestrutura-e-arquitetura.docx",
+    path: "assets/documentos-modelo/05-dimensionamento-de-infraestrutura-e-arquitetura.docx",
+    agentId: "infrastructure-sizing",
+    description: {
+      pt: "Organiza ambientes, stack tecnológica, integrações, segurança, backup, monitoramento e premissas técnicas.",
+      en: "Organizes environments, technology stack, integrations, security, backup, monitoring and technical assumptions.",
+      es: "Organiza ambientes, stack tecnológica, integraciones, seguridad, backup, monitoreo y premisas técnicas."
+    }
+  },
+  {
+    id: "diretorio-equipe",
+    title: "Diretório da Equipe",
+    category: {
+      pt: "Equipe",
+      en: "Team",
+      es: "Equipo"
+    },
+    extension: ".docx",
+    fileName: "06-diretorio-da-equipe.docx",
+    path: "assets/documentos-modelo/06-diretorio-da-equipe.docx",
+    agentId: "team-directory",
+    description: {
+      pt: "Centraliza papéis, responsabilidades, contatos, disponibilidade e informações de referência dos integrantes.",
+      en: "Centralizes roles, responsibilities, contacts, availability and reference information for team members.",
+      es: "Centraliza roles, responsabilidades, contactos, disponibilidad e información de referencia de los integrantes."
+    }
+  },
+  {
+    id: "status-report",
+    title: "Status Report",
+    category: {
+      pt: "Acompanhamento",
+      en: "Tracking",
+      es: "Seguimiento"
+    },
+    extension: ".docx",
+    fileName: "07-status-report.docx",
+    path: "assets/documentos-modelo/07-status-report.docx",
+    agentId: "status-report",
+    description: {
+      pt: "Modelo para comunicar andamento, indicadores, riscos, impedimentos, decisões e próximos passos do projeto.",
+      en: "Template for communicating progress, indicators, risks, blockers, decisions and next project steps.",
+      es: "Modelo para comunicar avance, indicadores, riesgos, impedimentos, decisiones y próximos pasos del proyecto."
+    }
+  },
+  {
+    id: "timeline-projeto",
+    title: "Timeline do Sistema MK Barbearia",
+    category: {
+      pt: "Cronograma",
+      en: "Timeline",
+      es: "Cronograma"
+    },
+    extension: ".svg",
+    fileName: "07-timeline-sistema-mk-barbearia.svg",
+    path: "assets/documentos-modelo/07-timeline-sistema-mk-barbearia.svg",
+    agentId: "project-timeline",
+    description: {
+      pt: "Visualização gráfica das fases, marcos e ciclos de entrega do projeto.",
+      en: "Graphic view of project phases, milestones and delivery cycles.",
+      es: "Visualización gráfica de las fases, hitos y ciclos de entrega del proyecto."
+    }
+  },
+  {
+    id: "detalhamento-ciclos",
+    title: "Detalhamento dos Ciclos",
+    category: {
+      pt: "Ciclos",
+      en: "Cycles",
+      es: "Ciclos"
+    },
+    extension: ".xlsx",
+    fileName: "08-detalhamento-dos-ciclos.xlsx",
+    path: "assets/documentos-modelo/08-detalhamento-dos-ciclos.xlsx",
+    agentId: "cycle-details",
+    description: {
+      pt: "Planilha para detalhar ciclos, sprints, entregas, métricas, datas e acompanhamento da evolução.",
+      en: "Spreadsheet for detailing cycles, sprints, deliveries, metrics, dates and progress tracking.",
+      es: "Planilla para detallar ciclos, sprints, entregas, métricas, fechas y seguimiento de la evolución."
+    }
+  },
+  {
+    id: "termo-aceite",
+    title: "Termo de Aceite - Sprint 3",
+    category: {
+      pt: "Aceite",
+      en: "Acceptance",
+      es: "Aceptación"
+    },
+    extension: ".docx",
+    fileName: "09-termo-de-aceite-sprint-3.docx",
+    path: "assets/documentos-modelo/09-termo-de-aceite-sprint-3.docx",
+    agentId: "acceptance-term",
+    description: {
+      pt: "Formaliza aceite de entrega, critérios atendidos, responsáveis, ressalvas e aprovação da sprint.",
+      en: "Formalizes delivery acceptance, fulfilled criteria, owners, caveats and sprint approval.",
+      es: "Formaliza aceptación de entrega, criterios atendidos, responsables, salvedades y aprobación de la sprint."
+    }
+  },
+  {
+    id: "backlog-sprint",
+    title: "Backlog Sprint 3",
+    category: {
+      pt: "Backlog",
+      en: "Backlog",
+      es: "Backlog"
+    },
+    extension: ".xlsx",
+    fileName: "10-backlog-sprint-3.xlsx",
+    path: "assets/documentos-modelo/10-backlog-sprint-3.xlsx",
+    agentId: "sprint-backlog",
+    description: {
+      pt: "Planilha para organizar itens da sprint, alocação, esforço, riscos, prioridades e indicadores de capacidade.",
+      en: "Spreadsheet for organizing sprint items, allocation, effort, risks, priorities and capacity indicators.",
+      es: "Planilla para organizar ítems de la sprint, asignación, esfuerzo, riesgos, prioridades e indicadores de capacidad."
+    }
+  },
+  {
+    id: "ata-kickoff",
+    title: "Ata de Reunião de Kick-off",
+    category: {
+      pt: "Reuniões",
+      en: "Meetings",
+      es: "Reuniones"
+    },
+    extension: ".docx",
+    fileName: "ata-de-reuniao-de-kick-off.docx",
+    path: "assets/documentos-modelo/ata-de-reuniao-de-kick-off.docx",
+    agentId: "kickoff-minutes",
+    description: {
+      pt: "Registra alinhamentos iniciais, participantes, objetivos, decisões, pendências e próximos passos do kick-off.",
+      en: "Records initial alignments, attendees, goals, decisions, pending items and kick-off next steps.",
+      es: "Registra alineaciones iniciales, participantes, objetivos, decisiones, pendientes y próximos pasos del kick-off."
+    }
+  },
+  {
+    id: "ata-retrospectiva",
+    title: "Ata de Retrospectiva",
+    category: {
+      pt: "Melhoria contínua",
+      en: "Continuous Improvement",
+      es: "Mejora continua"
+    },
+    extension: ".docx",
+    fileName: "ata-de-retrospectiva.docx",
+    path: "assets/documentos-modelo/ata-de-retrospectiva.docx",
+    agentId: "retrospective-minutes",
+    description: {
+      pt: "Consolida aprendizados, pontos positivos, oportunidades de melhoria e ações combinadas para os próximos ciclos.",
+      en: "Consolidates learnings, strengths, improvement opportunities and agreed actions for upcoming cycles.",
+      es: "Consolida aprendizajes, puntos positivos, oportunidades de mejora y acciones acordadas para próximos ciclos."
+    }
+  }
+];
 
 const projectDetails = {
   pt: {
@@ -402,6 +908,422 @@ function escapeHtml(text) {
     .replaceAll("'", "&#39;");
 }
 
+function getLocalizedValue(value, lang = currentLang) {
+  if (typeof value === "string") {
+    return value;
+  }
+
+  return value?.[lang] ?? value?.pt ?? "";
+}
+
+function getProjectModelLabels() {
+  return projectModelLabels[currentLang] ?? projectModelLabels.pt;
+}
+
+function getProjectModelDocument(documentId) {
+  return projectModelDocuments.find((documentModel) => documentModel.id === documentId);
+}
+
+function getProjectModelAgent(documentModel) {
+  if (!documentModel?.agentId) {
+    return null;
+  }
+
+  return projectModelAgents[documentModel.agentId] ?? null;
+}
+
+function renderProjectModelCards() {
+  if (!projectModelGrid) {
+    return;
+  }
+
+  const labels = getProjectModelLabels();
+  const totalPages = Math.ceil(projectModelDocuments.length / projectModelPageSize);
+  currentProjectModelPage = Math.min(currentProjectModelPage, totalPages - 1);
+
+  const startIndex = currentProjectModelPage * projectModelPageSize;
+  const currentDocuments = projectModelDocuments.slice(
+    startIndex,
+    startIndex + projectModelPageSize
+  );
+
+  const rowsMarkup = currentDocuments
+    .map((documentModel) => {
+      return `
+        <article class="project-model-row" role="row">
+          <div class="project-model-cell project-model-name-cell" role="cell" data-label="${escapeHtml(labels.nameColumn)}">
+            <button class="model-title-button" type="button" data-open-document="${escapeHtml(documentModel.id)}">
+              ${escapeHtml(documentModel.title)}
+            </button>
+            <div class="model-meta-line">
+              <span>${escapeHtml(getLocalizedValue(documentModel.category))}</span>
+            </div>
+          </div>
+          <p class="project-model-cell model-description" role="cell" data-label="${escapeHtml(labels.summaryColumn)}">
+            ${escapeHtml(getLocalizedValue(documentModel.description))}
+          </p>
+          <div class="project-model-cell model-card-actions" role="cell" data-label="${escapeHtml(labels.actionColumn)}">
+            <button class="project-detail-button" type="button" data-open-document="${escapeHtml(documentModel.id)}">
+              ${escapeHtml(labels.moreDetails)}
+            </button>
+          </div>
+        </article>
+      `;
+    })
+    .join("");
+
+  const paginationStatus = labels.paginationStatus
+    .replace("{current}", String(currentProjectModelPage + 1))
+    .replace("{total}", String(totalPages));
+
+  projectModelGrid.innerHTML = `
+    <div class="project-model-table card" role="table" aria-label="${escapeHtml(labels.libraryKicker)}">
+      <div class="project-model-table-head" role="row">
+        <span role="columnheader">${escapeHtml(labels.nameColumn)}</span>
+        <span role="columnheader">${escapeHtml(labels.summaryColumn)}</span>
+        <span role="columnheader">${escapeHtml(labels.actionColumn)}</span>
+      </div>
+      ${rowsMarkup}
+    </div>
+    <div class="project-model-pagination" aria-label="${escapeHtml(paginationStatus)}">
+      <button
+        class="project-model-page-button"
+        type="button"
+        aria-label="${escapeHtml(labels.firstPage)}"
+        title="${escapeHtml(labels.firstPage)}"
+        data-model-page="first"
+        ${currentProjectModelPage === 0 ? "disabled" : ""}
+      >
+        &lt;&lt;
+      </button>
+      <button
+        class="project-model-page-button"
+        type="button"
+        aria-label="${escapeHtml(labels.previousPage)}"
+        title="${escapeHtml(labels.previousPage)}"
+        data-model-page="previous"
+        ${currentProjectModelPage === 0 ? "disabled" : ""}
+      >
+        &lt;
+      </button>
+      <span>${escapeHtml(paginationStatus)}</span>
+      <button
+        class="project-model-page-button"
+        type="button"
+        aria-label="${escapeHtml(labels.nextPage)}"
+        title="${escapeHtml(labels.nextPage)}"
+        data-model-page="next"
+        ${currentProjectModelPage >= totalPages - 1 ? "disabled" : ""}
+      >
+        &gt;
+      </button>
+      <button
+        class="project-model-page-button"
+        type="button"
+        aria-label="${escapeHtml(labels.lastPage)}"
+        title="${escapeHtml(labels.lastPage)}"
+        data-model-page="last"
+        ${currentProjectModelPage >= totalPages - 1 ? "disabled" : ""}
+      >
+        &gt;&gt;
+      </button>
+    </div>
+  `;
+}
+
+function setDocumentPreviewStatus(message) {
+  if (documentPreviewStatus) {
+    documentPreviewStatus.textContent = message;
+  }
+}
+
+function setDocumentPreviewMessage(title, body) {
+  if (!documentPreview) {
+    return;
+  }
+
+  documentPreview.className = "document-preview";
+  documentPreview.innerHTML = `
+    <div class="document-preview-message">
+      <strong>${escapeHtml(title)}</strong>
+      <span>${escapeHtml(body)}</span>
+    </div>
+  `;
+}
+
+function resetDocumentPreviewPrompt(labels) {
+  documentPreviewRequestId += 1;
+  setDocumentPreviewStatus(labels.previewPromptStatus);
+  setDocumentPreviewMessage(labels.previewPromptTitle, labels.previewPromptBody);
+}
+
+function renderSvgPreview(documentModel, labels) {
+  if (!documentPreview) {
+    return;
+  }
+
+  documentPreview.className = "document-preview";
+  documentPreview.innerHTML = `
+    <div class="document-preview-image">
+      <img src="${escapeHtml(documentModel.path)}" alt="${escapeHtml(documentModel.title)}">
+    </div>
+  `;
+  setDocumentPreviewStatus(labels.svgReady);
+}
+
+async function renderDocxPreview(arrayBuffer, labels, requestId) {
+  if (!documentPreview) {
+    return;
+  }
+
+  if (!window.mammoth?.convertToHtml) {
+    setDocumentPreviewStatus(labels.previewUnavailableTitle);
+    setDocumentPreviewMessage(labels.previewUnavailableTitle, labels.docxLibraryMissing);
+    return;
+  }
+
+  const result = await window.mammoth.convertToHtml({ arrayBuffer });
+
+  if (requestId !== documentPreviewRequestId) {
+    return;
+  }
+
+  const documentMarkup = result.value?.trim();
+  const warningMarkup = result.messages?.length
+    ? `<p class="document-preview-note">${escapeHtml(labels.docxWarning)}</p>`
+    : "";
+
+  documentPreview.className = "document-preview docx-preview";
+  documentPreview.innerHTML = documentMarkup
+    ? `${documentMarkup}${warningMarkup}`
+    : `
+      <div class="document-preview-message">
+        <strong>${escapeHtml(labels.previewUnavailableTitle)}</strong>
+        <span>${escapeHtml(labels.unsupportedPreview)}</span>
+      </div>
+    `;
+  setDocumentPreviewStatus(labels.previewReady);
+}
+
+function buildSpreadsheetTable(sheetName, sheet, labels) {
+  const rows = window.XLSX.utils.sheet_to_json(sheet, {
+    header: 1,
+    blankrows: false,
+    defval: "",
+    raw: false
+  });
+
+  if (!rows.length) {
+    return `
+      <section class="spreadsheet-sheet">
+        <h3>${escapeHtml(sheetName)}</h3>
+        <p class="document-preview-note">${escapeHtml(labels.emptySpreadsheet)}</p>
+      </section>
+    `;
+  }
+
+  const maxPreviewRows = 80;
+  const maxPreviewColumns = 24;
+  const originalColumnCount = rows.reduce((max, row) => Math.max(max, row.length), 0);
+  const previewRows = rows
+    .slice(0, maxPreviewRows)
+    .map((row) => row.slice(0, maxPreviewColumns));
+  const columnCount = Math.min(
+    maxPreviewColumns,
+    previewRows.reduce((max, row) => Math.max(max, row.length), 0)
+  );
+  const truncated = rows.length > maxPreviewRows || originalColumnCount > maxPreviewColumns;
+
+  const tableRows = previewRows
+    .map((row, rowIndex) => {
+      const cellTag = rowIndex === 0 ? "th" : "td";
+      const cells = Array.from({ length: columnCount }, (_, cellIndex) => {
+        const value = row[cellIndex] ?? "";
+        return `<${cellTag}>${escapeHtml(String(value))}</${cellTag}>`;
+      }).join("");
+
+      return `<tr>${cells}</tr>`;
+    })
+    .join("");
+
+  return `
+    <section class="spreadsheet-sheet">
+      <h3>${escapeHtml(sheetName)}</h3>
+      <table class="spreadsheet-table">
+        <tbody>${tableRows}</tbody>
+      </table>
+      ${truncated ? `<p class="document-preview-note">${escapeHtml(labels.truncatedPreview)}</p>` : ""}
+    </section>
+  `;
+}
+
+function renderSpreadsheetPreview(arrayBuffer, labels) {
+  if (!documentPreview) {
+    return;
+  }
+
+  if (!window.XLSX?.read) {
+    setDocumentPreviewStatus(labels.previewUnavailableTitle);
+    setDocumentPreviewMessage(labels.previewUnavailableTitle, labels.spreadsheetLibraryMissing);
+    return;
+  }
+
+  const workbook = window.XLSX.read(arrayBuffer, {
+    type: "array",
+    cellDates: true
+  });
+
+  const visibleSheetNames = workbook.SheetNames.slice(0, 5);
+  const sheetMarkup = visibleSheetNames
+    .map((sheetName) => buildSpreadsheetTable(sheetName, workbook.Sheets[sheetName], labels))
+    .join("");
+  const truncatedWorkbook = workbook.SheetNames.length > visibleSheetNames.length;
+
+  documentPreview.className = "document-preview";
+  documentPreview.innerHTML = `
+    ${sheetMarkup}
+    ${truncatedWorkbook ? `<p class="document-preview-note">${escapeHtml(labels.truncatedPreview)}</p>` : ""}
+  `;
+  setDocumentPreviewStatus(labels.previewReady);
+}
+
+async function renderDocumentPreview(documentModel) {
+  if (!documentPreview) {
+    return;
+  }
+
+  const labels = getProjectModelLabels();
+  const requestId = documentPreviewRequestId + 1;
+  documentPreviewRequestId = requestId;
+
+  setDocumentPreviewStatus(labels.loading);
+  setDocumentPreviewMessage(labels.loading, getLocalizedValue(documentModel.description));
+
+  if (documentModel.extension === ".svg") {
+    renderSvgPreview(documentModel, labels);
+    return;
+  }
+
+  if (![".docx", ".xlsx", ".xls"].includes(documentModel.extension)) {
+    setDocumentPreviewStatus(labels.previewUnavailableTitle);
+    setDocumentPreviewMessage(labels.previewUnavailableTitle, labels.unsupportedPreview);
+    return;
+  }
+
+  try {
+    const response = await fetch(documentModel.path);
+
+    if (requestId !== documentPreviewRequestId) {
+      return;
+    }
+
+    if (!response.ok) {
+      throw new Error(`Preview request failed with status ${response.status}`);
+    }
+
+    const arrayBuffer = await response.arrayBuffer();
+
+    if (requestId !== documentPreviewRequestId) {
+      return;
+    }
+
+    if (documentModel.extension === ".docx") {
+      await renderDocxPreview(arrayBuffer, labels, requestId);
+      return;
+    }
+
+    renderSpreadsheetPreview(arrayBuffer, labels);
+  } catch (error) {
+    if (requestId !== documentPreviewRequestId) {
+      return;
+    }
+
+    setDocumentPreviewStatus(labels.previewUnavailableTitle);
+    setDocumentPreviewMessage(labels.previewUnavailableTitle, labels.fetchError);
+  }
+}
+
+function renderDocumentModelModal(documentId) {
+  const documentModel = getProjectModelDocument(documentId);
+
+  if (!documentModel || !documentModalTitle || !documentModalDescription) {
+    return;
+  }
+
+  const labels = getProjectModelLabels();
+  const agent = getProjectModelAgent(documentModel);
+
+  if (documentModalKicker) {
+    documentModalKicker.textContent = labels.libraryKicker;
+  }
+
+  documentModalTitle.textContent = documentModel.title;
+  documentModalDescription.textContent = getLocalizedValue(documentModel.description);
+
+  if (documentModalPreviewButton) {
+    documentModalPreviewButton.textContent = labels.viewDocument;
+  }
+
+  if (documentModalDownload) {
+    documentModalDownload.href = documentModel.path;
+    documentModalDownload.setAttribute("download", documentModel.fileName);
+    documentModalDownload.textContent = labels.download;
+  }
+
+  if (documentModalExternal) {
+    documentModalExternal.href = documentModel.path;
+    documentModalExternal.textContent = labels.openExternal;
+  }
+
+  if (documentModalClose) {
+    documentModalClose.setAttribute("aria-label", labels.close);
+  }
+
+  if (documentModalAgent) {
+    documentModalAgent.hidden = !agent;
+    documentModalAgent.innerHTML = agent
+      ? `
+        <p class="document-agent-label">${escapeHtml(labels.relatedAgent)}</p>
+        <strong>${escapeHtml(getLocalizedValue(agent.title))}</strong>
+        <p>${escapeHtml(getLocalizedValue(agent.summary))}</p>
+        <a class="btn btn-accent" href="${escapeHtml(agent.href)}" target="_blank" rel="noreferrer">
+          ${escapeHtml(labels.agentDetails)}
+        </a>
+      `
+      : "";
+  }
+
+  resetDocumentPreviewPrompt(labels);
+}
+
+function openDocumentModelModal(documentId) {
+  if (!documentModal) {
+    return;
+  }
+
+  if (!getProjectModelDocument(documentId)) {
+    return;
+  }
+
+  activeDocumentModelId = documentId;
+  renderDocumentModelModal(documentId);
+  documentModal.classList.add("open");
+  documentModal.setAttribute("aria-hidden", "false");
+  document.body.classList.add("modal-open");
+}
+
+function closeDocumentModelModal() {
+  if (!documentModal) {
+    return;
+  }
+
+  activeDocumentModelId = "";
+  documentPreviewRequestId += 1;
+  documentModal.classList.remove("open");
+  documentModal.setAttribute("aria-hidden", "true");
+  document.body.classList.remove("modal-open");
+}
+
 function getHeaderOffset() {
   return siteHeader ? siteHeader.getBoundingClientRect().height : 0;
 }
@@ -538,8 +1460,18 @@ function applyTranslations(lang) {
     );
   }
 
+  if (documentModalClose) {
+    documentModalClose.setAttribute("aria-label", getProjectModelLabels().close);
+  }
+
+  renderProjectModelCards();
+
   if (activeProjectId) {
     renderProjectModal(activeProjectId);
+  }
+
+  if (activeDocumentModelId) {
+    renderDocumentModelModal(activeDocumentModelId);
   }
 
   updateThemeToggleLabel();
@@ -1032,8 +1964,59 @@ projectDetailButtons.forEach((button) => {
   });
 });
 
+projectModelGrid?.addEventListener("click", (event) => {
+  const trigger = event.target instanceof Element
+    ? event.target.closest("[data-open-document]")
+    : null;
+  const pageTrigger = event.target instanceof Element
+    ? event.target.closest("[data-model-page]")
+    : null;
+
+  if (pageTrigger) {
+    const direction = pageTrigger.dataset.modelPage;
+    const totalPages = Math.ceil(projectModelDocuments.length / projectModelPageSize);
+
+    if (direction === "first") {
+      currentProjectModelPage = 0;
+    }
+
+    if (direction === "previous") {
+      currentProjectModelPage = Math.max(0, currentProjectModelPage - 1);
+    }
+
+    if (direction === "next") {
+      currentProjectModelPage = Math.min(totalPages - 1, currentProjectModelPage + 1);
+    }
+
+    if (direction === "last") {
+      currentProjectModelPage = totalPages - 1;
+    }
+
+    renderProjectModelCards();
+    return;
+  }
+
+  if (!trigger) {
+    return;
+  }
+
+  openDocumentModelModal(trigger.dataset.openDocument);
+});
+
 projectModalDismissTriggers.forEach((trigger) => {
   trigger.addEventListener("click", closeProjectModal);
+});
+
+documentModalDismissTriggers.forEach((trigger) => {
+  trigger.addEventListener("click", closeDocumentModelModal);
+});
+
+documentModalPreviewButton?.addEventListener("click", () => {
+  const documentModel = getProjectModelDocument(activeDocumentModelId);
+
+  if (documentModel) {
+    renderDocumentPreview(documentModel);
+  }
 });
 
 languageButtons.forEach((button) => {
@@ -1072,6 +2055,11 @@ document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") {
     if (projectModal?.classList.contains("open")) {
       closeProjectModal();
+      return;
+    }
+
+    if (documentModal?.classList.contains("open")) {
+      closeDocumentModelModal();
       return;
     }
 
