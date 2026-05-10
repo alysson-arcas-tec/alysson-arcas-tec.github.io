@@ -1583,41 +1583,86 @@ html[data-theme="light"] .contact-actions .btn-github::before {
 }
 
 .document-preview.docx-preview {
-  display: grid;
-  gap: 0.75rem;
+  display: block;
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+.document-preview.docx-preview * {
+  position: static !important;
+  max-width: 100%;
+  float: none !important;
+  box-sizing: border-box;
 }
 
 .document-preview.docx-preview h1,
 .document-preview.docx-preview h2,
 .document-preview.docx-preview h3 {
-  margin: 0.6rem 0 0.2rem;
+  clear: both;
+  margin: 1.25rem 0 0.65rem;
   font-family: var(--font-display);
+  line-height: 1.18;
 }
 
 .document-preview.docx-preview p {
-  margin: 0;
+  margin: 0 0 0.85rem;
   color: var(--muted);
   line-height: 1.65;
+}
+
+.document-preview.docx-preview ul,
+.document-preview.docx-preview ol {
+  margin: 0 0 1rem 1.25rem;
+  padding: 0;
+  color: var(--muted);
+}
+
+.document-preview.docx-preview li {
+  margin-bottom: 0.45rem;
+  line-height: 1.6;
+}
+
+.document-preview.docx-preview img {
+  height: auto;
+  margin: 0.75rem 0;
 }
 
 .document-preview.docx-preview table,
 .spreadsheet-table {
   width: 100%;
   border-collapse: collapse;
-  overflow: hidden;
   font-size: 0.84rem;
+}
+
+.document-preview.docx-preview table {
+  display: block;
+  clear: both;
+  width: max-content;
+  min-width: 100%;
+  max-width: 100%;
+  margin: 1rem 0;
+  overflow-x: auto;
+  table-layout: auto;
+}
+
+.document-preview.docx-preview tbody,
+.document-preview.docx-preview thead,
+.document-preview.docx-preview tr {
+  width: max-content;
 }
 
 .document-preview.docx-preview th,
 .document-preview.docx-preview td,
 .spreadsheet-table th,
 .spreadsheet-table td {
-  min-width: 7rem;
+  min-width: 9rem;
   padding: 0.6rem 0.7rem;
   border: 1px solid var(--control-border);
   color: var(--muted);
   text-align: left;
   vertical-align: top;
+  line-height: 1.45;
+  white-space: normal;
 }
 
 .spreadsheet-sheet {
